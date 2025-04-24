@@ -1,0 +1,10 @@
+{
+  "KingSlimeRed": {
+    "hp": 10,
+    "attack": 5
+  },
+  "SlimeGreen": {
+    "hp": 1,
+    "attack": 1
+  }
+}

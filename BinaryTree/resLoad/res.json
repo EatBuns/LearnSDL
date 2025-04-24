@@ -1,0 +1,66 @@
+{
+  "atlas": {
+    "KingSlimeRed": [
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\KingSlimeRed_01.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\KingSlimeRed_02.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\KingSlimeRed_03.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\KingSlimeRed_04.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\KingSlimeRed_05.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\KingSlimeRed_06.png"
+    ],
+    "SlimeGreen": [
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\SlimeGreen_01.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\SlimeGreen_02.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\SlimeGreen_03.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\SlimeGreen_04.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\SlimeGreen_05.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\SlimeGreen_06.png"
+    ],
+    "Role_Jump": [
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Jump1.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Jump2.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Jump3.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Jump4.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Jump5.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Jump6.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Jump7.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Jump8.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Jump9.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Jump10.png"
+    ],
+    "Role_Attack": [
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Attack1.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Attack2.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Attack3.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Attack4.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Attack5.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Attack6.png"
+    ],
+    "Role_Idle": [
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Idle1.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Idle2.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Idle3.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Idle4.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Idle5.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Idle6.png"
+    ],
+    "Role_Run": [
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Run1.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Run2.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Run3.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Run4.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Run5.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Run6.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Run7.png",
+      "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Role_Run8.png"
+    ]
+  },
+  "image": {
+    "Platform": "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\Platform.png",
+    "BlueSword": "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\BlueSword.png"
+  },
+  "ttf": {
+    "SarasaMonoSC": "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\SarasaMonoSC-Regular.ttf",
+    "IPix": "C:\\Users\\worker\\source\\repos\\ConsoleApplication1\\BinaryTree\\resource\\IPix.ttf"
+  }
+}

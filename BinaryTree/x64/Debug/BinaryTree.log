@@ -1,0 +1,5 @@
+﻿  xSlime.cpp
+LINK : warning LNK4075: 忽略“/INCREMENTAL”(由于“/PROFILE”规范)
+imgui.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/OPT:REF”规范)
+LINK : warning LNK4098: 默认库“LIBCMT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
+  BinaryTree.vcxproj -> C:\Users\worker\source\repos\ConsoleApplication1\x64\Debug\BinaryTree.exe
