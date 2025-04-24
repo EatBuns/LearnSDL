@@ -158,7 +158,6 @@ void SlimeIdleState::on_enter()
 	timer.setInterval(100);
 	timer.setSingleShot(true);
 	timer.setCallBack([](int i) {
-		SDL_Log("use %d\n",i);
 		m_slime->switchState("Jump");
 	});
 }

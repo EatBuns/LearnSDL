@@ -50,8 +50,9 @@ vecsInfo loadJson::loadfile(const std::string& path)
 				for (int i = 0; i < array_size; i++) {
 					cJSON* item = cJSON_GetArrayItem(atlas_item, i);
 					if (cJSON_IsString(item) && item->valuestring != NULL) {
-						printf("  Image path %d: %s\n", i + 1, item->valuestring);
-						info.files.push_back(item->valuestring);
+						auto path = getAbsolutePath(item->valuestring);
+						printf("  Image path %d: %s\n", i + 1, path.data());
+						info.files.push_back(path);
 					}
 				}
 			}
@@ -69,8 +70,9 @@ vecsInfo loadJson::loadfile(const std::string& path)
 			const char* image_name = image_item->string;
 			info.name = image_name;
 			if (cJSON_IsString(image_item) && image_item->valuestring != NULL) {
-				printf("Image name: %s, Image path: %s\n", image_name, image_item->valuestring);
-				info.files = image_item->valuestring;
+				auto path = getAbsolutePath(image_item->valuestring);
+				printf("Image name: %s, Image path: %s\n", image_name, path.data());
+				info.files = path;
 			}
 			iminfo.emplace_back(info);
 		}
@@ -86,8 +88,9 @@ vecsInfo loadJson::loadfile(const std::string& path)
 			const char* image_name = image_item->string;
 			info.name = image_name;
 			if (cJSON_IsString(image_item) && image_item->valuestring != NULL) {
-				printf("ttf name: %s, ttf path: %s\n", image_name, image_item->valuestring);
-				info.files = image_item->valuestring;
+				auto path = getAbsolutePath(image_item->valuestring);
+				printf("ttf name: %s, ttf path: %s\n", image_name, path.data());
+				info.files = path;
 			}
 			ttfinfo.emplace_back(info);
 		}

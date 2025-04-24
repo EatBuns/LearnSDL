@@ -131,14 +131,16 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 
 	SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_BLEND);
 
+	auto resPath = getAbsolutePath("resLoad/res.json");
 	loadJson ljson;
-	DataManager::GetInstance().loadResource(&ljson, "C:/Users/worker/source/repos/ConsoleApplication1/BinaryTree/resLoad/res.json",m_renderer);
+	DataManager::GetInstance().loadResource(&ljson, resPath,m_renderer);
 
 	Font::instance().setRender(m_renderer);
 	Font::instance().SetFont(DataManager::GetInstance().getFontPath("SarasaMonoSC"), "SarasaMonoSC", 16);
 	Font::instance().SetFont(DataManager::GetInstance().getFontPath("IPix"), "IPix", 16);
 
-	testTexture = IMG_LoadTexture(m_renderer, "C:/Users/worker/source/repos/ConsoleApplication1/BinaryTree/resource/Platform.png");
+	resPath = getAbsolutePath("resource/Platform.png");
+	testTexture = IMG_LoadTexture(m_renderer, resPath.data());
 	if (!testTexture)
 	{
 		SDL_Log("err,testTexture load failed!\n");

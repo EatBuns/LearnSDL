@@ -7,6 +7,7 @@ inputControl::inputControl():idx(InputMode::keyboard)
 		inputs[i] = nullptr;
 	}
 	inputs[0] = new keyBoradBridge();
+    inputs[1] = new GameControlBridge();
 }
 
 inputControl::~inputControl()

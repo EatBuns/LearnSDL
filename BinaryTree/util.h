@@ -6,6 +6,13 @@
 
 namespace GameEngine2D
 {
+#define ABSOLUTEPATH "C:\\Users\\Zero4\\source\\repos\\learnSDL\\BinaryTree\\"
+	
+	static std::string getAbsolutePath(const std::string& p)
+	{
+		return std::string(ABSOLUTEPATH) + p;
+	}
+
 	struct AtlasInfo
 	{
 		AtlasInfo() = default;
@@ -68,7 +75,7 @@ namespace GameEngine2D
 		std::vector<AtlasInfo> atlas;
 	}vecsInfo;
 
-	typedef struct 
+	typedef struct NodeStatus
 	{
 		int hp = 0;
 		int phy_atk = 0;		//ÎïÀí¹¥»÷

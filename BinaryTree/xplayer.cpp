@@ -113,6 +113,7 @@ xplayer::xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch):Charac
 	setInput(true);
 	ic.changeKeyMap("LEFT", SDL_KeyCode::SDLK_a);
 	ic.changeKeyMap("RIGHT", SDL_KeyCode::SDLK_d);
+	//ic.changeInputMode(inputControl::InputMode::gamecontrol);
 	vx = 100;
 }
 
@@ -205,7 +206,7 @@ void JumpState::on_enter()
 {
 	playerState::on_enter();
 	m_AnimationState->reset();
-	m_player->getCollisionBox()->setVy(-10);
+	m_player->getCollisionBox()->setVy(-7);
 	m_player->setOnfloor(false);
 }
 
@@ -262,3 +263,7 @@ void AttackState::on_exit()
 	playerState::on_exit();
 	SDL_Log("player attack exit");
 }
+
+//技能系统(树)
+//战士、坦克、法师分支
+//加攻击

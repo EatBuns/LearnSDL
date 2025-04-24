@@ -114,7 +114,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\worker\source\repos\ConsoleApplication1\BinaryTree\3rd\imgui\include;C:\Users\worker\source\repos\ConsoleApplication1\BinaryTree\3rd\cJSON\include;D:\Compressed\SDL2_image-2.8.2\include;D:\Compressed\SDL2_ttf-2.22.0\include;D:\Compressed\SDL2_mixer-2.8.0\include;D:\Compressed\SDL2-2.30.9\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)3rd\cJSON\include;$(ProjectDir)3rd\imgui\include;$(ProjectDir)3rd\SDL2_image-2.8.2\include;$(ProjectDir)3rd\SDL2_mixer-2.8.0\include;$(ProjectDir)3rd\SDL2_ttf-2.22.0\include;$(ProjectDir)3rd\SDL2-2.30.9\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -155,7 +155,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>D:\Compressed\SDL2-2.30.9\lib\x64\SDL2.lib;D:\Compressed\SDL2-2.30.9\lib\x64\SDL2main.lib;D:\Compressed\SDL2-2.30.9\lib\x64\SDL2test.lib;D:\Compressed\SDL2_ttf-2.22.0\lib\x64\SDL2_ttf.lib;D:\Compressed\SDL2_mixer-2.8.0\lib\x64\SDL2_mixer.lib;D:\Compressed\SDL2_image-2.8.2\lib\x64\SDL2_image.lib;C:\Users\worker\source\repos\ConsoleApplication1\BinaryTree\3rd\cJSON\lib\x64\cjson.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(ProjectDir)3rd\SDL2-2.30.9\lib\x64\SDL2.lib;$(ProjectDir)3rd\SDL2-2.30.9\lib\x64\SDL2main.lib;$(ProjectDir)3rd\SDL2-2.30.9\lib\x64\SDL2test.lib;$(ProjectDir)3rd\SDL2_ttf-2.22.0\lib\x64\SDL2_ttf.lib;$(ProjectDir)3rd\SDL2_mixer-2.8.0\lib\x64\SDL2_mixer.lib;$(ProjectDir)3rd\SDL2_image-2.8.2\lib\x64\SDL2_image.lib;$(ProjectDir)3rd\cJSON\lib\x64\cjson.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>

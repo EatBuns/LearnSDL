@@ -59,7 +59,8 @@ public:
 
     void inputEvent(SDL_Event& e) override
     {
-        if (e.type == SDL_CONTROLLERBUTTONDOWN || e.type == SDL_CONTROLLERBUTTONUP)
+		//SDL_Log("type:%d,time:%d\n", e.type, e.common.timestamp);
+        if (e.cbutton.type == SDL_CONTROLLERBUTTONDOWN || e.cbutton.type == SDL_CONTROLLERBUTTONUP)
         {
             bool is_pressed = (e.type == SDL_CONTROLLERBUTTONDOWN);
             switch (e.cbutton.button)
