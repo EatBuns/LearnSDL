@@ -6,7 +6,18 @@
 
 namespace GameEngine2D
 {
+#define WORKER
+#define BUNS
+
+#if 1
+#undef  BUNS
+#endif
+
+#ifdef BUNS
 #define ABSOLUTEPATH "C:\\Users\\Zero4\\source\\repos\\learnSDL\\BinaryTree\\"
+#elif defined(WORKER)
+#define ABSOLUTEPATH "C:\\Users\\worker\\source\\repos\\LearnSDL\\BinaryTree\\"
+#endif
 	
 	static std::string getAbsolutePath(const std::string& p)
 	{
@@ -77,10 +88,33 @@ namespace GameEngine2D
 
 	typedef struct NodeStatus
 	{
+		NodeStatus():hp(0),phy_atk(0), mag_atk(0), phy_def(0), mag_def(0), mana(0) {}
+		NodeStatus(int h, int pa, int ma, int pd, int md, int mn) :hp(h),phy_atk(pa), mag_atk(ma), 
+																   phy_def(pd), mag_def(md), mana(mn) {}
+		NodeStatus(const NodeStatus& o):hp(o.hp),phy_atk(o.phy_atk),mag_atk(o.mag_atk),phy_def(o.phy_def),
+										mag_def(o.mag_def),mana(o.mana){}
+		NodeStatus& operator=(const NodeStatus&o) {
+			hp = o.hp;
+			phy_atk = o.phy_atk;
+			phy_def = o.phy_def;
+			mag_atk = o.mag_atk;
+			mag_def = o.mag_def;
+			mana = o.mana;
+			return *this;
+		}
 		int hp = 0;
 		int phy_atk = 0;		//物理攻击
 		int mag_atk = 0;		//魔法攻击
 		int phy_def = 0;		//物理防御
 		int mag_def = 0;		//魔法防御
+		int mana = 0;
 	}NodeStatus;
+
+	struct PlayerStatus
+	{
+		int level = 0;
+		int exp = 0;
+		int need_exp = 0;
+		NodeStatus status;
+	};
 }

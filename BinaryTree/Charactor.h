@@ -2,6 +2,7 @@
 
 #include "Animation.h"
 #include "CollisionBox.h"
+#include "util.h"
 #include <map>
 
 class xState
@@ -89,6 +90,20 @@ private:
 	bool needInit = true;
 };
 
+class buff {
+public:
+	virtual void add(float v) { value += v; }
+	virtual void sub(float v) { value -= v; }
+protected:
+	float value = 1.0f;
+	mTimer buffTimer;
+};
+
+class speedBuff : public buff
+{
+
+};
+
 class Charactor :public XNode
 {
 public:
@@ -141,9 +156,10 @@ public:
 			INvinTimer.start();
 		}
 	}
+	void setNodeStatus(const GameEngine2D::NodeStatus& s) { m_status = s; }
+	GameEngine2D::NodeStatus& getNodeStatus() { return m_status; }
 
 protected:
-	//AnimationState* current_state;
 	SDL_FPoint Position;						//角色位置
 	float vx;									//横向速度
 	float Actual_h, Actual_w;					//实际的角色的高度
@@ -152,5 +168,6 @@ protected:
 	CollisionBox* m_box;
 	bool isInvincible = false, isNeedRender = false;
 	mTimer INvinTimer, renderTimer;
+	GameEngine2D::NodeStatus m_status;
 };
 

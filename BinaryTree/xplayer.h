@@ -132,6 +132,6 @@ private:
 	StateMachine m_machine;
 	float v_vx,v_vy;					//每帧速度
 	bool  isfaceright = 0;				//控制轴
-	int   hp, mp;						
+
 };
 
