@@ -13,7 +13,8 @@ public:
 		layer0,		//玩家
 		layer1,		//平台
 		layer2,		//敌人
-		layer3
+		layer3,		//道具
+		layer4
 	};
 	~CollisionBox() {};
 	void on_update(float delat);
@@ -56,6 +57,7 @@ private:
 		dst_layer[CollissionLayer::layer1] = false;
 		dst_layer[CollissionLayer::layer2] = false;
 		dst_layer[CollissionLayer::layer3] = false;
+		dst_layer[CollissionLayer::layer4] = false;
 	}
 
 	SDL_FRect m_rect;

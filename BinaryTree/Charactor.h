@@ -92,16 +92,145 @@ private:
 
 class buff {
 public:
+	enum buffType
+	{
+		SPEED = 0,		//速度
+		PHY_ATTACK,		//物理攻击
+		PHY_DEFENCE		//物理防御
+	};
+	buff() {
+		buffTimer.setInterval(1000);
+		buffTimer.setSingleShot(true);
+		std::function<void(int i)> cb = std::bind(&buff::onCallback, this, std::placeholders::_1);
+		buffTimer.setCallBack(cb);
+	}
+	buff(float times) {
+		buffTimer.setInterval(times);
+		buffTimer.setSingleShot(true);
+		std::function<void(int i)> cb = std::bind(&buff::onCallback, this, std::placeholders::_1);
+		buffTimer.setCallBack(cb);
+	}
+	~buff() = default;
+	buff(const buff& o) {
+		value = o.value;
+		buffTimer.setInterval(o.buffTimer.getInterval());
+		buffTimer.setSingleShot(o.buffTimer.getSignleShot());
+		std::function<void(int i)> cb = std::bind(&buff::onCallback, this, std::placeholders::_1);
+		buffTimer.setCallBack(cb);
+	}
+	buff& operator=(const buff& o) {
+		if (this != &o) {
+			value = o.value;
+			buffTimer.setInterval(o.buffTimer.getInterval());
+			buffTimer.setSingleShot(o.buffTimer.getSignleShot());
+			std::function<void(int i)> cb = std::bind(&buff::onCallback, this, std::placeholders::_1);
+			buffTimer.setCallBack(cb);
+		}
+		return *this;
+	}
 	virtual void add(float v) { value += v; }
 	virtual void sub(float v) { value -= v; }
+	virtual void onCallback(int i) {
+		if(exit)
+			exit();
+	}
+
+	void on_update(float delta);
+	void setInterval(float interval) { buffTimer.setInterval(interval); }
+	void onStart() { buffTimer.start();if(enter) enter(); }
+	void setEnable(bool e) { m_isEnabled = e; }
+	void setBaseValue(float v) { base_value = v; }
+	bool isEnabled() { return m_isEnabled; }
+	float getValue() { return value * base_value; }
+	void setEnterCallBack(std::function<void()> cb) {
+		this->enter = cb;
+	}
+	void setExitCallBack(std::function<void()> cb) {
+		this->exit = cb;
+	}
+
 protected:
-	float value = 1.0f;
+	float value = 1.0f, base_value = 1.0f;
 	mTimer buffTimer;
+	bool m_isEnabled = false;
+	std::function<void()> enter,exit;
 };
 
 class speedBuff : public buff
 {
+public:
+	speedBuff() :buff() {}
 
+	void add(float v) { 
+		buff::add(v);
+		if (value >= 2.0f)
+		{
+			value = 2.0f;
+		}
+	}
+	void onCallback(int i)override {
+		buff::onCallback(i);
+		value = 1.0f;
+	}
+};
+
+class buffManager
+{
+public:
+	buffManager();
+	~buffManager();
+
+	void setBaseSpeed(float v) { m_buffs[0]->setBaseValue(v); }
+
+	void startBuff(int type, float times, float value, float baseValue, int valueType) {
+		auto it = m_buffs.find(type);
+		if (it != m_buffs.end()) {
+			switch (valueType)
+			{
+			case 0:
+				it->second->add(value);
+				break;
+			case 1:
+				it->second->sub(value);
+				break;
+			default:
+				break;
+			}
+			it->second->setBaseValue(baseValue);
+			it->second->setInterval(times);
+			it->second->onStart();
+		}
+	}
+	void on_update(float delta) {
+		for (m_iter = m_buffs.begin(); m_iter != m_end; ++m_iter)
+		{
+			m_iter->second->on_update(delta);
+		}
+	}
+	float getBuffValue(int type) {
+		auto it = m_buffs.find(type);
+		if (it != m_buffs.end()) {
+			return it->second->getValue();
+		}
+		return 1.0f;
+	}
+
+	void setEnterCB(int type, std::function<void()> cb) {
+		auto it = m_buffs.find(type);
+		if (it != m_buffs.end()) {
+			it->second->setEnterCallBack(cb);
+		}
+	}
+	void setExitCB(int type, std::function<void()> cb) {
+		auto it = m_buffs.find(type);
+		if (it != m_buffs.end()) {
+			it->second->setExitCallBack(cb);
+		}
+	}
+private:
+	std::map<int, std::shared_ptr<buff>> m_buffs;
+	std::map<int, std::shared_ptr<buff>>::iterator m_iter;
+	std::map<int, std::shared_ptr<buff>>::iterator m_end;
 };
 
 class Charactor :public XNode
@@ -109,7 +238,7 @@ class Charactor :public XNode
 public:
 	Charactor() = default;
 	virtual ~Charactor() = default;
-	Charactor(const std::string& name, Animation::AnimationAnchor anch):XNode(name),vx(0),isOnFlooor(false),m_anchor(anch){
+	Charactor(const std::string& name, Animation::AnimationAnchor anch, float vx):XNode(name),vx(vx),isOnFlooor(false),m_anchor(anch){
 		Position.x = 0;
 		Position.y = 0;
 
@@ -126,11 +255,16 @@ public:
 			isNeedRender = !isNeedRender;
 		});
 		renderTimer.start();
+
+		m_buffManager.setBaseSpeed(vx);
 	}
 
 	void on_update(float delat)override {
 		INvinTimer.on_update(delat);
 		renderTimer.on_update(delat);
+		m_buffManager.on_update(delat);
+
+		vx = m_buffManager.getBuffValue(0);
 	}
 	void on_render() override {}
 
@@ -159,6 +293,11 @@ public:
 	void setNodeStatus(const GameEngine2D::NodeStatus& s) { m_status = s; }
 	GameEngine2D::NodeStatus& getNodeStatus() { return m_status; }
 
+	//buff类型,持续时间ms,数值,数值类型(0,加;1,减)
+	void startBuff(int type, float times, float value,float baseValue, int valueType) {
+		m_buffManager.startBuff(type, times, value, vx, valueType);
+	}
+
 protected:
 	SDL_FPoint Position;						//角色位置
 	float vx;									//横向速度
@@ -169,5 +308,6 @@ protected:
 	bool isInvincible = false, isNeedRender = false;
 	mTimer INvinTimer, renderTimer;
 	GameEngine2D::NodeStatus m_status;
+	buffManager m_buffManager;
 };
 

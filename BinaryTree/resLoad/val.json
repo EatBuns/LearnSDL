@@ -1,10 +1,15 @@
-{
-  "KingSlimeRed": {
-    "hp": 10,
-    "attack": 5
-  },
-  "SlimeGreen": {
-    "hp": 1,
-    "attack": 1
-  }
-}
+[
+  "monster":
+  [
+    {
+      "hp": 3,
+      "phy_atk": 1,
+      "phy_def": 0,
+      "mag_atk": 0,
+      "mag_def": 0,
+      "mana": 0,
+      "speed": 50
+    },
+  ]
+ 
+]

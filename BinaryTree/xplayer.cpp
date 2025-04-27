@@ -76,7 +76,7 @@ void RunState::on_exit()
 	SDL_Log("run state exit");
 }
 
-xplayer::xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch):Charactor("xplayer",anch)
+xplayer::xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch, float vx):Charactor("xplayer",anch,vx)
 {
 	auto idleAnima = std::make_shared<AnimationState>("Role_Idle", renderer);
 	idleAnima->setAnchor(anch);
@@ -114,7 +114,13 @@ xplayer::xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch):Charac
 	ic.changeKeyMap("LEFT", SDL_KeyCode::SDLK_a);
 	ic.changeKeyMap("RIGHT", SDL_KeyCode::SDLK_d);
 	//ic.changeInputMode(inputControl::InputMode::gamecontrol);
-	vx = 100;
+
+	m_buffManager.setEnterCB(0, [&]() {
+		m_box->setDstLayer(CollisionBox::CollissionLayer::layer3, false);
+	});
+	m_buffManager.setExitCB(0, [&]() {
+		m_box->setDstLayer(CollisionBox::CollissionLayer::layer3, true);
+	});
 }
 
 void xplayer::on_input(SDL_Event& e)
@@ -125,6 +131,7 @@ void xplayer::on_input(SDL_Event& e)
 void xplayer::on_update(float delat)
 {
 	Charactor::on_update(delat);
+	SDL_Log("player speed:%f\n", vx);
 	int Axis = (int)(ic.isRight() - ic.isLeft());
 	v_vx = Axis * vx * (delat / 1000);
 	if (Axis == 1) isfaceright = true;
@@ -187,7 +194,8 @@ void xplayer::on_CollisionCb(int layer,int collisionSide, SDL_FRect rect)
 		setInvincible();
 		break;
 	case 3:
-
+		SDL_Log("speed add\n");
+		startBuff(0, 3000, 1.0f, vx, 0);
 		break;
 	default:
 		break;

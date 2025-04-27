@@ -13,7 +13,8 @@ class loadImpl
 public:
 	loadImpl() = default;
 	~loadImpl() = default;
-	virtual vecsInfo loadfile(const std::string& path) = 0;
+	virtual vecsInfo loadResourcefile(const std::string& path) = 0;
+	virtual void loadDatafile(const std::string& path) = 0;
 };
 
 class loadJson :public loadImpl
@@ -21,7 +22,8 @@ class loadJson :public loadImpl
 public:
 	loadJson() = default;
 	~loadJson() = default;
-	vecsInfo loadfile(const std::string& path) override;
+	vecsInfo loadResourcefile(const std::string& path) override;
+	void loadDatafile(const std::string& path)override;
 };
 
 class loadXml :public loadImpl
@@ -29,7 +31,8 @@ class loadXml :public loadImpl
 public:
 	loadXml() = default;
 	~loadXml() = default;
-	vecsInfo loadfile(const std::string& path) override;
+	vecsInfo loadResourcefile(const std::string& path) override;
+	void loadDatafile(const std::string& path)override;
 };
 
 class DataManager
@@ -43,10 +46,12 @@ public:
 	DataManager(const DataManager&) = delete;
 	DataManager& operator=(const DataManager&) = delete;
 	void loadResource(loadImpl *impl, const std::string& path, SDL_Renderer* renderer);
+	void loadData(loadImpl* impl, const std::string& path);
 	std::shared_ptr<SDL_Texture>& findImage(const std::string& name){ return gResources[name]; }
 	std::vector<std::shared_ptr<SDL_Texture>>& findAtlas(const std::string& name) { return gAtlas[name]; }
 	std::shared_ptr<SDL_Texture>& findAtlasIndex(const std::string& name, int index);
-
+	NodeStatus& findMonster(const std::string& name) { return gMonsters[name]; }
+	PlayerStatus& getPlayerState() { return gPlayerStatus; }
 	std::string getFontPath(const std::string& name);
 	
 private:
@@ -55,6 +60,8 @@ private:
 
 	std::unordered_map<std::string, std::shared_ptr<SDL_Texture> > gResources;
 	std::unordered_map<std::string, std::vector<std::shared_ptr<SDL_Texture>>> gAtlas;
+	std::unordered_map<std::string, NodeStatus> gMonsters;
+	PlayerStatus gPlayerStatus;
 	vecsInfo srcPath;
 };
 

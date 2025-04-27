@@ -76,7 +76,7 @@ void CollisionManager::checkCollision()
         {
             if (box != other && box->isEnable() && other->isEnable() && SDL_HasIntersectionF(&box->getRect(), &other->getRect()))
             {
-                if (box->getDstLayer()[other->getSrcLayer()])
+                if (box->getDstLayer()[other->getSrcLayer()] && box->cb)
                 {
                     const SDL_FRect boxRect = box->getRect();
                     const SDL_FRect otherRect = other->getRect();

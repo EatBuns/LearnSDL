@@ -150,7 +150,7 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	SDL_FPoint p;
 	p.x = 100.0f;
 	p.y = 100.0f;
-	auto player = std::make_shared<xplayer>(m_renderer, Animation::AnimationAnchor::bottom);
+	auto player = std::make_shared<xplayer>(m_renderer, Animation::AnimationAnchor::bottom,100);
 	player->setPosition(p);
 	player->setActualH(60);
 	player->setActualW(50);
@@ -161,13 +161,14 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	box->setSrcLayer(CollisionBox::CollissionLayer::layer0);
 	box->setDstLayer(CollisionBox::CollissionLayer::layer1, true);
 	box->setDstLayer(CollisionBox::CollissionLayer::layer2, true);
+	box->setDstLayer(CollisionBox::CollissionLayer::layer3, true);
 	box->setResetCb(std::bind(&xplayer::resetFunc, player.get()));
 	box->setCallBack(std::bind(&xplayer::on_CollisionCb, player.get(), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	player->setCollisionBox(box);
 
 	p.x = 200.0f;
 	p.y = 200.0f;
-	auto slime = std::make_shared<xSlime>(m_renderer, Animation::AnimationAnchor::bottom);
+	auto slime = std::make_shared<xSlime>(m_renderer, Animation::AnimationAnchor::bottom,50);
 	slime->setPosition(p);
 	slime->setActualH(20);
 	slime->setActualW(20);
@@ -201,6 +202,18 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	platform->setSrcLayer(CollisionBox::CollissionLayer::layer1);
 	platform->setPosition(0, 500);
 	platform->setSize(100, 100);
+
+	platform = CollisionManager::instance().createBox();
+	platform->setcolor(200, 50, 10, 200);
+	platform->setDstLayer(CollisionBox::CollissionLayer::layer0, true);
+	platform->setSrcLayer(CollisionBox::CollissionLayer::layer3);
+	platform->setPosition(200, 500);
+	platform->setSize(20, 20);
+	//const std::function<void(int, int, SDL_FRect)> cb = [platform](int layer, int collisionSide, SDL_FRect rect) {
+	//	platform->setEnable(false);
+	//	//CollisionManager::instance().destroyBox(platform);
+	//};
+	//platform->setCallBack(cb);
 
 	addChild(player);
 	addChild(slime);

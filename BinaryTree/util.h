@@ -108,7 +108,17 @@ namespace GameEngine2D
 		int phy_def = 0;		//物理防御
 		int mag_def = 0;		//魔法防御
 		int mana = 0;
+
+		//节点属性
+		int vx_s = 50; //每秒移动50像素
 	}NodeStatus;
+
+	struct DamageSkill
+	{
+		std::string name;
+		std::string desc;
+		int damage = 0;
+	};
 
 	struct PlayerStatus
 	{

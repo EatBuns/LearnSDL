@@ -83,3 +83,22 @@ void Charactor::setCollisionBox(CollisionBox* box)
 		break;
 	}
 }
+
+buffManager::buffManager()
+{
+	m_buffs[(int)buff::buffType::SPEED] = std::make_shared<speedBuff>();
+	m_buffs[(int)buff::buffType::PHY_ATTACK] = std::make_shared<speedBuff>();
+	m_buffs[(int)buff::buffType::PHY_DEFENCE] = std::make_shared<speedBuff>();
+
+	m_iter = m_buffs.begin();
+	m_end = m_buffs.end();
+}
+
+buffManager::~buffManager()
+{
+}
+
+void buff::on_update(float delta)
+{
+	buffTimer.on_update(delta);
+}

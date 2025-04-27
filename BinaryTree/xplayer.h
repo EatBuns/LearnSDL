@@ -112,7 +112,7 @@ public:
 class xplayer:public Charactor
 {
 public:
-	xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch);
+	xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch,float vx);
 	~xplayer() {};
 
 	void on_input(SDL_Event& e);

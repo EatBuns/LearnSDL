@@ -3,7 +3,7 @@
 #include <cJSON.h>
 #include <tuple>
 
-vecsInfo loadJson::loadfile(const std::string& path)
+vecsInfo loadJson::loadResourcefile(const std::string& path)
 {
 	vecsInfo ret;
 	FILE* fp = nullptr;
@@ -105,15 +105,24 @@ vecsInfo loadJson::loadfile(const std::string& path)
 	return ret;
 }
 
-vecsInfo loadXml::loadfile(const std::string& path)
+void loadJson::loadDatafile(const std::string& path)
+{
+}
+
+vecsInfo loadXml::loadResourcefile(const std::string& path)
 {
 	vecsInfo ret;
 	return ret;
 }
 
+void loadXml::loadDatafile(const std::string& path)
+{
+
+}
+
 void DataManager::loadResource(loadImpl* impl, const std::string& path, SDL_Renderer* renderer)
 {
-	srcPath = std::move(impl->loadfile(path));
+	srcPath = std::move(impl->loadResourcefile(path));
 	
 	for (auto& atlas : srcPath.atlas)
 	{
@@ -159,6 +168,11 @@ void DataManager::loadResource(loadImpl* impl, const std::string& path, SDL_Rend
 			}
 		}
 	}
+}
+
+void DataManager::loadData(loadImpl* impl, const std::string& path)
+{
+	impl->loadDatafile(path);
 }
 
 std::shared_ptr<SDL_Texture>& DataManager::findAtlasIndex(const std::string& name, int index)  
