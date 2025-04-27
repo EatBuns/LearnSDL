@@ -9,7 +9,7 @@ namespace GameEngine2D
 #define WORKER
 #define BUNS
 
-#if 1
+#if 0
 #undef  BUNS
 #endif
 
@@ -89,10 +89,10 @@ namespace GameEngine2D
 	typedef struct NodeStatus
 	{
 		NodeStatus():hp(0),phy_atk(0), mag_atk(0), phy_def(0), mag_def(0), mana(0) {}
-		NodeStatus(int h, int pa, int ma, int pd, int md, int mn) :hp(h),phy_atk(pa), mag_atk(ma), 
-																   phy_def(pd), mag_def(md), mana(mn) {}
+		NodeStatus(int h, int pa, int ma, int pd, int md, int mn,int vx) :hp(h),phy_atk(pa), mag_atk(ma), 
+																   phy_def(pd), mag_def(md), mana(mn),vx_s(vx) {}
 		NodeStatus(const NodeStatus& o):hp(o.hp),phy_atk(o.phy_atk),mag_atk(o.mag_atk),phy_def(o.phy_def),
-										mag_def(o.mag_def),mana(o.mana){}
+										mag_def(o.mag_def),mana(o.mana),vx_s(o.vx_s){}
 		NodeStatus& operator=(const NodeStatus&o) {
 			hp = o.hp;
 			phy_atk = o.phy_atk;
@@ -100,6 +100,7 @@ namespace GameEngine2D
 			mag_atk = o.mag_atk;
 			mag_def = o.mag_def;
 			mana = o.mana;
+			vx_s = o.vx_s;
 			return *this;
 		}
 		int hp = 0;
@@ -110,7 +111,7 @@ namespace GameEngine2D
 		int mana = 0;
 
 		//节点属性
-		int vx_s = 50; //每秒移动50像素
+		int vx_s = 0; //每秒移动多少像素
 	}NodeStatus;
 
 	struct DamageSkill
@@ -122,9 +123,14 @@ namespace GameEngine2D
 
 	struct PlayerStatus
 	{
+		PlayerStatus() = default;
+		PlayerStatus(const PlayerStatus& o) :exp(o.exp), need_exp(o.need_exp),
+			playerName(o.playerName), status(o.status) {
+		}
 		int level = 0;
 		int exp = 0;
 		int need_exp = 0;
+		std::string playerName;
 		NodeStatus status;
 	};
 }

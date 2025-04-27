@@ -134,6 +134,8 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	auto resPath = getAbsolutePath("resLoad/res.json");
 	loadJson ljson;
 	DataManager::GetInstance().loadResource(&ljson, resPath,m_renderer);
+	resPath = getAbsolutePath("resLoad/val.json");
+	DataManager::GetInstance().loadData(&ljson, resPath);
 
 	Font::instance().setRender(m_renderer);
 	Font::instance().SetFont(DataManager::GetInstance().getFontPath("SarasaMonoSC"), "SarasaMonoSC", 16);
@@ -150,7 +152,7 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	SDL_FPoint p;
 	p.x = 100.0f;
 	p.y = 100.0f;
-	auto player = std::make_shared<xplayer>(m_renderer, Animation::AnimationAnchor::bottom,100);
+	auto player = std::make_shared<xplayer>(m_renderer, Animation::AnimationAnchor::bottom, DMInstance.getPlayerState().status.vx_s, DataManager::GetInstance().getPlayerState());
 	player->setPosition(p);
 	player->setActualH(60);
 	player->setActualW(50);
@@ -164,11 +166,12 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	box->setDstLayer(CollisionBox::CollissionLayer::layer3, true);
 	box->setResetCb(std::bind(&xplayer::resetFunc, player.get()));
 	box->setCallBack(std::bind(&xplayer::on_CollisionCb, player.get(), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	box->setNodeName("player");
 	player->setCollisionBox(box);
 
 	p.x = 200.0f;
 	p.y = 200.0f;
-	auto slime = std::make_shared<xSlime>(m_renderer, Animation::AnimationAnchor::bottom,50);
+	auto slime = std::make_shared<xSlime>(m_renderer, Animation::AnimationAnchor::bottom, DMInstance.findMonster("slime").vx_s, DataManager::GetInstance().findMonster("slime"));
 	slime->setPosition(p);
 	slime->setActualH(20);
 	slime->setActualW(20);
@@ -181,9 +184,8 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	box1->setDstLayer(CollisionBox::CollissionLayer::layer1, true);
 	box1->setResetCb(std::bind(&xSlime::resetFunc, slime.get()));
 	box1->setCallBack(std::bind(&xSlime::on_CollisionCb, slime.get(), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	box1->setNodeName("slime");
 	slime->setCollisionBox(box1);
-
-
 
 	auto platform = CollisionManager::instance().createBox();
 	platform->setcolor(10, 10, 200, 200);
@@ -356,6 +358,19 @@ void engineBorad::on_update(float delta)
 	}
 	ImGui::Text("delta:%.1f", cur_delta);
 
+	int playerHP = -1;
+	float speed = 0;
+	for (auto& child : app_node->get_child_list())
+	{
+		xplayer* p = nullptr;
+		if ( (p = dynamic_cast<xplayer*>(child.get())) != nullptr)
+		{
+			playerHP = p->getHP();
+			speed = p->getVx();
+			break;
+		}
+	}
+
 	ImVec2 avail = ImGui::GetContentRegionAvail();
 	float tree_width = avail.x * 0.2f;
 	float scene_width = avail.x * 0.6f;
@@ -375,7 +390,8 @@ void engineBorad::on_update(float delta)
 	ImGui::SameLine();
 	{
 		ImGui::BeginChild("inspector", { inspector_width,ImGui::GetContentRegionAvail().y }, ImGuiChildFlags_Border);
-		ImGui::Text("test\n");
+		ImGui::Text("player hp:%d\n",playerHP);
+		ImGui::Text("player speed:%.2f\n", speed);
 		ImGui::EndChild();
 	}
 	ImGui::End();

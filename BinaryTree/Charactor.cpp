@@ -96,7 +96,7 @@ buffManager::buffManager()
 
 buffManager::~buffManager()
 {
-}
+}  
 
 void buff::on_update(float delta)
 {

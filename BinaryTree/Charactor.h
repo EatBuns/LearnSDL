@@ -238,7 +238,7 @@ class Charactor :public XNode
 public:
 	Charactor() = default;
 	virtual ~Charactor() = default;
-	Charactor(const std::string& name, Animation::AnimationAnchor anch, float vx):XNode(name),vx(vx),isOnFlooor(false),m_anchor(anch){
+	Charactor(const std::string& name, Animation::AnimationAnchor anch, float vx, NodeStatus& s):XNode(name),vx(vx),isOnFlooor(false),m_anchor(anch), m_status(s){
 		Position.x = 0;
 		Position.y = 0;
 
@@ -297,6 +297,13 @@ public:
 	void startBuff(int type, float times, float value,float baseValue, int valueType) {
 		m_buffManager.startBuff(type, times, value, vx, valueType);
 	}
+	int getHP() { 
+		return m_status.hp; 
+	}
+	//获取每秒移动像素值
+	float getVx() { return vx; }
+	float getActH() { return Actual_h; }
+	float getActW() { return Actual_w; }
 
 protected:
 	SDL_FPoint Position;						//角色位置

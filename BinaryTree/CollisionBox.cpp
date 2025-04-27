@@ -7,7 +7,6 @@ void CollisionBox::on_update(float delat)
 		m_rect.y += v_y;
 	}
 
-	//m_rect.y += v_y;
 	m_rect.x += v_x;
 
 	//updateFunc(this, delat);

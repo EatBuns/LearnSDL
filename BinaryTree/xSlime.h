@@ -48,7 +48,7 @@ public:
 class xSlime :public Charactor
 {
 public:
-	xSlime(SDL_Renderer* renderer, Animation::AnimationAnchor anch,float vx);
+	xSlime(SDL_Renderer* renderer, Animation::AnimationAnchor anch,float vx, NodeStatus& s);
 	~xSlime() {}
 	void on_update(float delat)override;
 	void on_render() override;

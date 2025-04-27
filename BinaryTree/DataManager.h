@@ -8,13 +8,14 @@
 
 using namespace GameEngine2D;
 
+
 class loadImpl
 {
 public:
 	loadImpl() = default;
 	~loadImpl() = default;
 	virtual vecsInfo loadResourcefile(const std::string& path) = 0;
-	virtual void loadDatafile(const std::string& path) = 0;
+	virtual void loadDatafile(const std::string& path, std::unordered_map<std::string, NodeStatus>& node, PlayerStatus& playerStatus) = 0;
 };
 
 class loadJson :public loadImpl
@@ -23,7 +24,7 @@ public:
 	loadJson() = default;
 	~loadJson() = default;
 	vecsInfo loadResourcefile(const std::string& path) override;
-	void loadDatafile(const std::string& path)override;
+	void loadDatafile(const std::string& path, std::unordered_map<std::string, NodeStatus>& node, PlayerStatus& playerStatus)override;
 };
 
 class loadXml :public loadImpl
@@ -32,17 +33,20 @@ public:
 	loadXml() = default;
 	~loadXml() = default;
 	vecsInfo loadResourcefile(const std::string& path) override;
-	void loadDatafile(const std::string& path)override;
+	void loadDatafile(const std::string& path, std::unordered_map<std::string, NodeStatus>& node, PlayerStatus& playerStatus)override;
 };
 
 class DataManager
 {
 public:
+	
 	static DataManager& GetInstance()
 	{
 		static DataManager instance;
 		return instance;
 	}
+	#define DMInstance DataManager::GetInstance()
+
 	DataManager(const DataManager&) = delete;
 	DataManager& operator=(const DataManager&) = delete;
 	void loadResource(loadImpl *impl, const std::string& path, SDL_Renderer* renderer);

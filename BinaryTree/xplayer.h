@@ -100,19 +100,21 @@ public:
 class AttackState :public playerState
 {
 public:
-	AttackState(std::shared_ptr<AnimationState>&& state) :playerState(std::move(state)) {
-		m_AnimationState->setLoop(false);
-	}
+	AttackState(std::shared_ptr<AnimationState>&& state);
 	~AttackState() {}
 	void on_update(float delat) override;
 	void on_enter() override;
 	void on_exit() override;
+
+private:
+	CollisionBox* m_box = nullptr;
+	bool m_ftr = true;
 };
 
 class xplayer:public Charactor
 {
 public:
-	xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch,float vx);
+	xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch,float vx, PlayerStatus& s);
 	~xplayer() {};
 
 	void on_input(SDL_Event& e);
@@ -121,6 +123,7 @@ public:
 	
 	void on_CollisionCb(int layer,int collisionSide, SDL_FRect rect);
 	void switchState(const std::string& name) { m_machine.switchTo(name); }
+	//获取每帧移动像素值
 	float getVvx() { return v_vx; }
 	bool is_face_to_right() { return isfaceright; }
 	bool isJump() { return ic.isSpace() && isOnFlooor; }
@@ -130,8 +133,8 @@ public:
 private:
 	inputControl ic;
 	StateMachine m_machine;
-	float v_vx,v_vy;					//每帧速度
-	bool  isfaceright = 0;				//控制轴
-
+	float v_vx = 0.0f, v_vy = 0.0f;					//每帧速度
+	bool  isfaceright = 0;							//控制轴
+	PlayerStatus m_playerStatus;					//玩家状态
 };
 

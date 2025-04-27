@@ -1,15 +1,24 @@
-[
-  "monster":
-  [
+{
+  "monsters": [
     {
-      "hp": 3,
-      "phy_atk": 1,
-      "phy_def": 0,
-      "mag_atk": 0,
-      "mag_def": 0,
+      "name": "slime",
+      "health_points": 3,
+      "physical_attack": 1,
+      "physical_defense": 0,
+      "magical_attack": 0,
+      "magical_defense": 0,
       "mana": 0,
       "speed": 50
-    },
-  ]
- 
-]
+    }
+  ],
+  "player": {
+    "name": "player",
+    "health_points": 10,
+    "physical_attack": 1,
+    "physical_defense": 0,
+    "magical_attack": 0,
+    "magical_defense": 0,
+    "mana": 0,
+    "speed": 100
+  }
+}

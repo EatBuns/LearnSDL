@@ -10,15 +10,18 @@ public:
 	friend class CollisionManager;
 	enum class CollissionLayer
 	{
-		layer0,		//玩家
-		layer1,		//平台
-		layer2,		//敌人
-		layer3,		//道具
-		layer4
+		None = -1,
+		layer0 = 0,		//玩家
+		layer1,			//平台
+		layer2,			//敌人
+		layer3,			//道具
+		layer4,			//玩家武器碰撞层
+		layer5
 	};
 	~CollisionBox() {};
 	void on_update(float delat);
 	void on_render(SDL_Renderer* renderer){
+		if (!m_isEnable) return;
 		SDL_SetRenderDrawColor(renderer, m_color.r, m_color.g, m_color.b, m_color.a);
 		SDL_RenderFillRectF(renderer, &m_rect);
 	};
@@ -50,6 +53,8 @@ public:
 	CollissionLayer getSrcLayer() { return src_layer; }
 	float getPos_x() { return m_rect.x; }
 	float getPos_y() { return m_rect.y; }
+	void setNodeName(const std::string& name) { NodeName = name; }
+	std::string getNodeName() { return NodeName; }
 
 private:
 	CollisionBox() {

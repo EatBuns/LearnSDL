@@ -2,7 +2,7 @@
 
 xSlime *SlimeState::m_slime = nullptr;
 
-xSlime::xSlime(SDL_Renderer* renderer, Animation::AnimationAnchor anch, float vx):Charactor("slime",anch,vx)
+xSlime::xSlime(SDL_Renderer* renderer, Animation::AnimationAnchor anch, float vx, NodeStatus& s):Charactor("slime",anch,vx,s)
 {
 	auto idleAnima = std::make_shared<AnimationState>("KingSlimeRed", 0, renderer);
 	idleAnima->setAnchor(anch);

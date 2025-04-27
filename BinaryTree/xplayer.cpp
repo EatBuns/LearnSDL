@@ -3,80 +3,7 @@
 
 xplayer* playerState::m_player = nullptr;
 
-void playerState::on_update(float delat)
-{
-	auto pp = m_player->getPosition();
-	m_AnimationState->setFilp( m_player->is_face_to_right() ? false : true);
-	m_AnimationState->setPos(pp);
-	m_AnimationState->on_update(delat);
-}
-
-void playerState::on_renderer()
-{
-	m_AnimationState->on_renderer();
-}
-
-void playerState::on_enter()
-{
-	auto pp = m_player->getPosition();
-	m_AnimationState->setPos(pp);
-}
-
-void playerState::on_exit()
-{
-}
-
-void IdleState::on_update(float delat)
-{
-	playerState::on_update(delat);
-
-	if (m_player->getVvx() != 0 && m_player->getIsOnFloor())
-		m_player->switchState("Run");
-	else if (m_player->isJump())
-		m_player->switchState("Jump");
-	else if (!m_player->getIsOnFloor())
-		m_player->switchState("Fall");
-	else if (m_player->isAttack())
-		m_player->switchState("Attack");
-}
-
-void IdleState::on_enter()
-{
-	SDL_Log("idle state enter");
-	playerState::on_enter();
-	m_player->getCollisionBox()->setVy(0);
-}
-
-void IdleState::on_exit()
-{
-	SDL_Log("idle state exit");
-	
-}
-
-void RunState::on_update(float delat)
-{
-	playerState::on_update(delat);
-
-	if (m_player->getVvx() == 0)
-		m_player->switchState("Idle");
-	else if (m_player->isJump())
-		m_player->switchState("Jump");
-	else if (!m_player->getIsOnFloor())
-		m_player->switchState("Fall");
-}
-
-void RunState::on_enter()
-{
-	SDL_Log("run state enter");
-	playerState::on_enter();
-}
-
-void RunState::on_exit()
-{
-	SDL_Log("run state exit");
-}
-
-xplayer::xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch, float vx):Charactor("xplayer",anch,vx)
+xplayer::xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch, float vx, PlayerStatus& s):Charactor("xplayer",anch,vx,s.status),m_playerStatus(s)
 {
 	auto idleAnima = std::make_shared<AnimationState>("Role_Idle", renderer);
 	idleAnima->setAnchor(anch);
@@ -131,7 +58,6 @@ void xplayer::on_input(SDL_Event& e)
 void xplayer::on_update(float delat)
 {
 	Charactor::on_update(delat);
-	SDL_Log("player speed:%f\n", vx);
 	int Axis = (int)(ic.isRight() - ic.isLeft());
 	v_vx = Axis * vx * (delat / 1000);
 	if (Axis == 1) isfaceright = true;
@@ -191,7 +117,18 @@ void xplayer::on_CollisionCb(int layer,int collisionSide, SDL_FRect rect)
 		break;
 	case 2:
 		SDL_Log("slime\n");
-		setInvincible();
+		{
+ 			int monster_atk = DataManager::GetInstance().findMonster("slime").phy_atk;
+			int self_def = m_playerStatus.status.phy_def;
+			if (monster_atk - self_def <= 0)	m_playerStatus.status.hp--;
+			else
+			{
+				m_playerStatus.status.hp -= (monster_atk - self_def);
+				m_status.hp -= (monster_atk - self_def);
+			}
+
+			setInvincible();
+		}
 		break;
 	case 3:
 		SDL_Log("speed add\n");
@@ -245,18 +182,36 @@ void FallState::on_exit()
 	SDL_Log("player fall exit");
 }
 
+AttackState::AttackState(std::shared_ptr<AnimationState>&& state) :playerState(std::move(state))
+{
+	m_box = CollisionManager::instance().createBox();
+	m_box->setSrcLayer(CollisionBox::CollissionLayer::layer4);
+	m_box->setSize(50, 30);
+	m_box->setcolor(10, 220, 30, 200);
+	m_box->setEnable(false);
+	
+	m_box->setGravityEnable(false);
+
+	m_AnimationState->setLoop(false);
+	auto func = std::function<void()>([&]() { 
+		if (m_player->getIsOnFloor())
+			m_player->switchState("Idle"); 
+		else if (m_player->getIsOnFloor() && m_player->getVvx() != 0)
+			m_player->switchState("Run");
+		else if (!m_player->getIsOnFloor())
+			m_player->switchState("Fall"); 
+	});
+	m_AnimationState->setcallback(func);
+}
+
 void AttackState::on_update(float delat)
 {
 	playerState::on_update(delat);
 
-	/*
-	if (m_player->getIsOnFloor())
-		m_player->switchState("Idle");
-	else if (m_player->getIsOnFloor() && m_player->getVvx() != 0)
-		m_player->switchState("Run");
-	else if (!m_player->getIsOnFloor())
-		m_player->switchState("Fall");*/  //放到动画结束后判断
-	/*else if(m_player->getCollisionBox()->getVy() <=)*/
+	if(m_ftr)
+		m_AnimationState->setFilp(false);
+	else
+		m_AnimationState->setFilp(true);
 }
 
 void AttackState::on_enter()
@@ -264,12 +219,97 @@ void AttackState::on_enter()
 	playerState::on_enter();
 	SDL_Log("player attack enter");
 	m_AnimationState->reset();
+
+	m_ftr = m_player->is_face_to_right();
+	m_box->setEnable(true);
+	if (m_ftr)
+	{	
+		m_box->setPosition(m_player->getPosition().x + m_player->getActW(), m_player->getPosition().y);
+	}
+	else
+	{
+		m_box->setPosition(m_player->getPosition().x - m_player->getActW(), m_player->getPosition().y);
+	}
 }
 
 void AttackState::on_exit()
 {
 	playerState::on_exit();
 	SDL_Log("player attack exit");
+	m_box->setEnable(false);
+}
+
+void playerState::on_update(float delat)
+{
+	auto pp = m_player->getPosition();
+	m_AnimationState->setFilp(m_player->is_face_to_right() ? false : true);
+	m_AnimationState->setPos(pp);
+	m_AnimationState->on_update(delat);
+}
+
+void playerState::on_renderer()
+{
+	m_AnimationState->on_renderer();
+}
+
+void playerState::on_enter()
+{
+	auto pp = m_player->getPosition();
+	m_AnimationState->setPos(pp);
+}
+
+void playerState::on_exit()
+{
+}
+
+void IdleState::on_update(float delat)
+{
+	playerState::on_update(delat);
+
+	if (m_player->getVvx() != 0 && m_player->getIsOnFloor())
+		m_player->switchState("Run");
+	else if (m_player->isJump())
+		m_player->switchState("Jump");
+	else if (!m_player->getIsOnFloor())
+		m_player->switchState("Fall");
+	else if (m_player->isAttack())
+		m_player->switchState("Attack");
+}
+
+void IdleState::on_enter()
+{
+	SDL_Log("idle state enter");
+	playerState::on_enter();
+	m_player->getCollisionBox()->setVy(0);
+}
+
+void IdleState::on_exit()
+{
+	SDL_Log("idle state exit");
+
+}
+
+void RunState::on_update(float delat)
+{
+	playerState::on_update(delat);
+
+	if (m_player->getVvx() == 0)
+		m_player->switchState("Idle");
+	else if (m_player->isJump())
+		m_player->switchState("Jump");
+	else if (!m_player->getIsOnFloor())
+		m_player->switchState("Fall");
+}
+
+void RunState::on_enter()
+{
+	SDL_Log("run state enter");
+	playerState::on_enter();
+}
+
+void RunState::on_exit()
+{
+	SDL_Log("run state exit");
 }
 
 //技能系统(树)
