@@ -16,15 +16,12 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{968d340a-c359-49ee-8e44-fc1ec2c8ffed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{39b7e3f2-0cfe-4bac-89b0-a72a54881301}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BTree.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DataManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
@@ -33,16 +30,7 @@
     <ClInclude Include="util.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Font.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Atlas.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="XNode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="mtimer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="inputAbstract.h">
@@ -57,39 +45,42 @@
     <ClInclude Include="TalkDialog.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionBox.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="xSlime.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="mtimer.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="DataManager.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionBox.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="xCamera.h">
+      <Filter>util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BTree.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="DataManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Font.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Atlas.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="XNode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="mtimer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="inputAbstract.cpp">
@@ -128,14 +119,32 @@
     <ClCompile Include="TalkDialog.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionBox.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="xSlime.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xItem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="mtimer.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManager.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionBox.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="xCamera.cpp">
+      <Filter>util</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

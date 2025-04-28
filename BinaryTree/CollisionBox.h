@@ -36,7 +36,7 @@ public:
 	void setGx(float x) { g_x = x; }
 	void setVy(float y) { v_y = y; }
 	void setVx(float x) { v_x = x; }
-	void setCallBack(const std::function<void(int, int, SDL_FRect)>& ccb) { cb = ccb; }
+	void setCallBack(const std::function<void(int, int, SDL_FRect, std::string& name)>& ccb) { cb = ccb; }
 	void setResetCb(const std::function<void()> ccb) { resetcb = ccb; }
 	void setEnable(bool e) { m_isEnable = e; }
 	SDL_FRect& getRect() { return m_rect; }
@@ -54,7 +54,7 @@ public:
 	float getPos_x() { return m_rect.x; }
 	float getPos_y() { return m_rect.y; }
 	void setNodeName(const std::string& name) { NodeName = name; }
-	std::string getNodeName() { return NodeName; }
+	std::string& getNodeName() { return NodeName; }
 
 private:
 	CollisionBox() {
@@ -73,7 +73,7 @@ private:
 	bool m_isEnable = true;
 	CollissionLayer src_layer;
 	std::map<CollissionLayer, bool> dst_layer;
-	std::function<void(int, int,SDL_FRect)> cb;
+	std::function<void(int, int,SDL_FRect, std::string& name)> cb;
 	std::function<void()> resetcb = nullptr;
 	std::function<void(CollisionBox* ptr, float delat)> updateFunc;
 	std::string NodeName;

@@ -14,7 +14,7 @@
   "player": {
     "name": "player",
     "health_points": 10,
-    "physical_attack": 1,
+    "physical_attack": 10,
     "physical_defense": 0,
     "magical_attack": 0,
     "magical_defense": 0,

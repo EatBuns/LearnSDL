@@ -57,7 +57,8 @@
   },
   "image": {
     "Platform": "resource\\Platform.png",
-    "BlueSword": "resource\\BlueSword.png"
+    "BlueSword": "resource\\BlueSword.png",
+    "testIcon": "resource\\testIcon.png"
   },
   "ttf": {
     "SarasaMonoSC": "resource\\SarasaMonoSC-Regular.ttf",

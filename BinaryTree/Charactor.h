@@ -238,16 +238,13 @@ class Charactor :public XNode
 public:
 	Charactor() = default;
 	virtual ~Charactor() = default;
-	Charactor(const std::string& name, Animation::AnimationAnchor anch, float vx, NodeStatus& s):XNode(name),vx(vx),isOnFlooor(false),m_anchor(anch), m_status(s){
+	Charactor(const std::string& name, Animation::AnimationAnchor anch, float vx, NodeStatus& s):XNode(name),base_vx(vx),isOnFlooor(false),m_anchor(anch), m_status(s){
 		Position.x = 0;
 		Position.y = 0;
 
 		INvinTimer.setInterval(1000);
 		INvinTimer.setSingleShot(true);
-		INvinTimer.setCallBack([&](int i) {
-			isInvincible = false;
-			m_box->setDstLayer(CollisionBox::CollissionLayer::layer2, true);
-		});
+		INvinTimer.setCallBack(std::function<void(int)>(std::bind(&Charactor::onInvincibleTimeOut, this, std::placeholders::_1)));
 
 		renderTimer.setInterval(50);
 		renderTimer.setSingleShot(false);
@@ -264,12 +261,19 @@ public:
 		renderTimer.on_update(delat);
 		m_buffManager.on_update(delat);
 
-		vx = m_buffManager.getBuffValue(0);
+		up_vx = m_buffManager.getBuffValue(0);
 	}
-	void on_render() override {}
+	void on_render() override {
+		if (isInvincible && isNeedRender)
+			return;
+		m_machine.on_render();
+	}
 
 	void setPosition(const SDL_FPoint& p);
-	void setVx(float x) { vx = x; }
+	void setVx(float x) {
+		base_vx = x; 
+		m_buffManager.setBaseSpeed(base_vx);
+	}
 	void setActualH(float h) { Actual_h = h; }
 	void setActualW(float w) { Actual_w = w; }
 	void setOnfloor(bool o) { isOnFlooor = o; }
@@ -281,33 +285,27 @@ public:
 		m_anchor = anch;
 	}
 	CollisionBox* getCollisionBox() { return m_box; }
-	void setInvincible() { 
-		if (!isInvincible)
-		{
-			m_box->setDstLayer(CollisionBox::CollissionLayer::layer2,false);
-			isInvincible = true; 
-			INvinTimer.reset(); 
-			INvinTimer.start();
-		}
-	}
+	virtual void setInvincible() = 0;
+	virtual void onInvincibleTimeOut(int ununsed) = 0;
 	void setNodeStatus(const GameEngine2D::NodeStatus& s) { m_status = s; }
 	GameEngine2D::NodeStatus& getNodeStatus() { return m_status; }
 
 	//buff类型,持续时间ms,数值,数值类型(0,加;1,减)
 	void startBuff(int type, float times, float value,float baseValue, int valueType) {
-		m_buffManager.startBuff(type, times, value, vx, valueType);
+		m_buffManager.startBuff(type, times, value, baseValue, valueType);
 	}
 	int getHP() { 
 		return m_status.hp; 
 	}
 	//获取每秒移动像素值
-	float getVx() { return vx; }
+	float getBaseVx() { return base_vx; }
+	float getUpVx() { return up_vx; }
 	float getActH() { return Actual_h; }
 	float getActW() { return Actual_w; }
 
 protected:
 	SDL_FPoint Position;						//角色位置
-	float vx;									//横向速度
+	float base_vx, up_vx;						//横向速度
 	float Actual_h, Actual_w;					//实际的角色的高度
 	Animation::AnimationAnchor m_anchor;		//锚点
 	bool isOnFlooor;							//是否在地面
@@ -316,5 +314,6 @@ protected:
 	mTimer INvinTimer, renderTimer;
 	GameEngine2D::NodeStatus m_status;
 	buffManager m_buffManager;
+	StateMachine m_machine;
 };
 

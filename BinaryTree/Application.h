@@ -22,6 +22,7 @@ private:
 	XNode* node_selected = nullptr, *app_node = nullptr;
 	SDL_Renderer* renderer = nullptr;
 	SDL_Texture* targetTexture = nullptr;
+	SDL_Texture* iconTexture = nullptr;
 };
 
 class Application : public XNode

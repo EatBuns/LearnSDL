@@ -25,7 +25,7 @@ void xSlime::on_update(float delat)
 {
 	Charactor::on_update(delat);
 
-	v_vx = direction * vx * (delat / 1000);
+	v_vx = direction * base_vx * (delat / 1000);
 	Position.x += v_vx;
 	m_box->setVx(v_vx);
 	if (m_box->isGravityEnable() && !isOnFlooor)
@@ -38,10 +38,10 @@ void xSlime::on_update(float delat)
 
 void xSlime::on_render()
 {
-	m_machine.on_render();
+	Charactor::on_render();
 }
 
-void xSlime::on_CollisionCb(int layer, int collisionSide, SDL_FRect rect)
+void xSlime::on_CollisionCb(int layer, int collisionSide, SDL_FRect rect, std::string& name)
 {
 	//collisionSide
 	//1:Åö×²µ½SrcLayerµÄ×ó±ß
@@ -76,12 +76,35 @@ void xSlime::on_CollisionCb(int layer, int collisionSide, SDL_FRect rect)
 			break;
 		}
 		break;
-	case 2:
+	case 3:
 
+		break;
+	case 4:
+	{
+		setInvincible();
+		SDL_Log("player pth_atk:%d, def:%d\n", DMInstance.getPlayerState().status.phy_atk,DMInstance.GetInstance().getPlayerState().status.phy_def);
+	}
 		break;
 	default:
 		break;
 	}
+}
+
+void xSlime::setInvincible()
+{
+	if (!isInvincible)
+	{
+		m_box->setDstLayer(CollisionBox::CollissionLayer::layer4, false);
+		isInvincible = true;
+		INvinTimer.reset();
+		INvinTimer.start();
+	}
+}
+
+void xSlime::onInvincibleTimeOut(int ununsed)
+{
+	isInvincible = false;
+	m_box->setDstLayer(CollisionBox::CollissionLayer::layer4, true);
 }
 
 void SlimeState::on_update(float delat)

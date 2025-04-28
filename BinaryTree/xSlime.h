@@ -52,13 +52,14 @@ public:
 	~xSlime() {}
 	void on_update(float delat)override;
 	void on_render() override;
-	void on_CollisionCb(int layer, int collisionSide, SDL_FRect rect);
+	void on_CollisionCb(int layer, int collisionSide, SDL_FRect rect, std::string& name);
 	void switchState(const std::string& name) { m_machine.switchTo(name); }
 	float getVvx() { return v_vx; }
 	void resetFunc() { isOnFlooor = false; }
+	void setInvincible()override;
+	void onInvincibleTimeOut(int ununsed)override;
 
 private:
-	StateMachine m_machine;
 	float v_vx, v_vy;			//每帧速度
 	int direction = 1;			//1:向右;	-1:向左
 };

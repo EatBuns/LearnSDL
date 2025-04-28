@@ -2,7 +2,7 @@
 
 #include "Charactor.h"
 #include "inputAbstract.h"
-
+#include "xItem.h"
 
 class xplayer;
 
@@ -109,19 +109,20 @@ public:
 private:
 	CollisionBox* m_box = nullptr;
 	bool m_ftr = true;
+	float p_vx;
 };
 
 class xplayer:public Charactor
 {
 public:
-	xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch,float vx, PlayerStatus& s);
+	xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch,float vx, NodeStatus& s);
 	~xplayer() {};
 
 	void on_input(SDL_Event& e);
 	void on_update(float delat)override;
 	void on_render() override;
 	
-	void on_CollisionCb(int layer,int collisionSide, SDL_FRect rect);
+	void on_CollisionCb(int layer,int collisionSide, SDL_FRect rect, std::string& name);
 	void switchState(const std::string& name) { m_machine.switchTo(name); }
 	//获取每帧移动像素值
 	float getVvx() { return v_vx; }
@@ -129,12 +130,16 @@ public:
 	bool isJump() { return ic.isSpace() && isOnFlooor; }
 	bool isAttack() { return ic.isAttack(); }
 	void resetFunc() { isOnFlooor = false; }
+	void setSuit(Head* h, Body* b, Legs* l);
+	void setInvincible()override;
+	void onInvincibleTimeOut(int ununsed)override;
 
 private:
 	inputControl ic;
-	StateMachine m_machine;
 	float v_vx = 0.0f, v_vy = 0.0f;					//每帧速度
 	bool  isfaceright = 0;							//控制轴
-	PlayerStatus m_playerStatus;					//玩家状态
+	Head* m_head = nullptr;
+	Body* m_body = nullptr;
+	Legs* m_legs = nullptr;
 };
 

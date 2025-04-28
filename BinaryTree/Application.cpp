@@ -65,12 +65,9 @@ void Application::Run()
 		this->on_update(m_delta);
 		CollisionManager::instance().on_update(m_delta);
 		
-		
 		SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); // 设置绘制颜色为黑色
 		SDL_RenderClear(m_renderer);
-
 		this->on_render();
-		
 		
 		ImGui::Render();
 		ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
@@ -152,11 +149,14 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	SDL_FPoint p;
 	p.x = 100.0f;
 	p.y = 100.0f;
-	auto player = std::make_shared<xplayer>(m_renderer, Animation::AnimationAnchor::bottom, DMInstance.getPlayerState().status.vx_s, DataManager::GetInstance().getPlayerState());
+	auto player = std::make_shared<xplayer>(m_renderer, Animation::AnimationAnchor::bottom, DMInstance.getPlayerState().status.vx_s, DMInstance.getPlayerState().status);
 	player->setPosition(p);
 	player->setActualH(60);
 	player->setActualW(50);
 
+	Body* b = new WANGBA_Body("wangba_body", m_renderer, ItemID::BODY_WANGBA);
+	Head* h = new WANGBA_Head("wangba_head", m_renderer, ItemID::HEAD_WANGBA);
+	Legs* l = new WANGBA_Legs("wangba_legs", m_renderer, ItemID::LEGS_WANGBA);
 	auto box = CollisionManager::instance().createBox();
 	box->setcolor(150, 50, 200, 150);
 	box->setGravityEnable(true);
@@ -165,9 +165,10 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	box->setDstLayer(CollisionBox::CollissionLayer::layer2, true);
 	box->setDstLayer(CollisionBox::CollissionLayer::layer3, true);
 	box->setResetCb(std::bind(&xplayer::resetFunc, player.get()));
-	box->setCallBack(std::bind(&xplayer::on_CollisionCb, player.get(), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	box->setCallBack(std::bind(&xplayer::on_CollisionCb, player.get(), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
 	box->setNodeName("player");
 	player->setCollisionBox(box);
+	player->setSuit(h, b, l);
 
 	p.x = 200.0f;
 	p.y = 200.0f;
@@ -180,10 +181,10 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	box1->setcolor(200, 100, 200, 150);
 	box1->setGravityEnable(true);
 	box1->setSrcLayer(CollisionBox::CollissionLayer::layer2);
-	box1->setDstLayer(CollisionBox::CollissionLayer::layer0, true);
+	box1->setDstLayer(CollisionBox::CollissionLayer::layer4, true);
 	box1->setDstLayer(CollisionBox::CollissionLayer::layer1, true);
 	box1->setResetCb(std::bind(&xSlime::resetFunc, slime.get()));
-	box1->setCallBack(std::bind(&xSlime::on_CollisionCb, slime.get(), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	box1->setCallBack(std::bind(&xSlime::on_CollisionCb, slime.get(), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
 	box1->setNodeName("slime");
 	slime->setCollisionBox(box1);
 
@@ -252,6 +253,7 @@ engineBorad::engineBorad(SDL_Renderer* r):renderer(r)
 {
 	targetTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
 		SDL_TEXTUREACCESS_TARGET, 800 * 0.6, 600);
+	iconTexture = DataManager::GetInstance().findImage("testIcon").get();
 }
 
 void engineBorad::on_update(float delta)
@@ -366,7 +368,7 @@ void engineBorad::on_update(float delta)
 		if ( (p = dynamic_cast<xplayer*>(child.get())) != nullptr)
 		{
 			playerHP = p->getHP();
-			speed = p->getVx();
+			speed = p->getUpVx();
 			break;
 		}
 	}
@@ -403,6 +405,17 @@ void engineBorad::on_render()
 	SDL_SetRenderTarget(renderer, targetTexture);
 	SDL_SetRenderDrawColor(renderer, 65, 65, 65, 255);
 	SDL_RenderClear(renderer);
+
+	int w, h;
+	
+	SDL_QueryTexture(iconTexture, NULL, NULL, &w, &h);
+
+	SDL_Rect src{ 0,0,w,h };
+	SDL_Rect dst{ 20,20,w,h };
+	SDL_SetTextureBlendMode(iconTexture, SDL_BLENDMODE_BLEND);
+	SDL_SetTextureColorMod(iconTexture, r, g, b);
+	SDL_RenderCopy(renderer, iconTexture, &src, &dst);
+
 
 	CollisionManager::instance().on_render(renderer);
 	for (auto& child : app_node->get_child_list())

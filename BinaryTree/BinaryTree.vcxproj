@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="Atlas.h" />
     <ClInclude Include="BTree.h" />
     <ClInclude Include="Charactor.h" />
     <ClInclude Include="CollisionBox.h" />
@@ -32,6 +31,8 @@
     <ClInclude Include="mtimer.h" />
     <ClInclude Include="TalkDialog.h" />
     <ClInclude Include="util.h" />
+    <ClInclude Include="xCamera.h" />
+    <ClInclude Include="xItem.h" />
     <ClInclude Include="XNode.h" />
     <ClInclude Include="xplayer.h" />
     <ClInclude Include="xSlime.h" />
@@ -47,7 +48,6 @@
     <ClCompile Include="3rd\imgui\TextEditor.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Atlas.cpp" />
     <ClCompile Include="BTree.cpp" />
     <ClCompile Include="Charactor.cpp" />
     <ClCompile Include="CollisionBox.cpp" />
@@ -57,6 +57,8 @@
     <ClCompile Include="inputAbstract.cpp" />
     <ClCompile Include="mtimer.cpp" />
     <ClCompile Include="TalkDialog.cpp" />
+    <ClCompile Include="xCamera.cpp" />
+    <ClCompile Include="xItem.cpp" />
     <ClCompile Include="XNode.cpp" />
     <ClCompile Include="xplayer.cpp" />
     <ClCompile Include="xSlime.cpp" />

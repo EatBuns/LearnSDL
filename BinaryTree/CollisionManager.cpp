@@ -81,7 +81,7 @@ void CollisionManager::checkCollision()
                     const SDL_FRect boxRect = box->getRect();
                     const SDL_FRect otherRect = other->getRect();
                     CollisionSide side = detect_collision_side(boxRect, other->getRect());
-					box->cb(static_cast<int>(other->getSrcLayer()), static_cast<int>(side), otherRect);
+					box->cb(static_cast<int>(other->getSrcLayer()), static_cast<int>(side), otherRect, other->getNodeName());
                 }
             }
         }

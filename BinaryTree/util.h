@@ -9,7 +9,7 @@ namespace GameEngine2D
 #define WORKER
 #define BUNS
 
-#if 0
+#if 1
 #undef  BUNS
 #endif
 
@@ -133,4 +133,6 @@ namespace GameEngine2D
 		std::string playerName;
 		NodeStatus status;
 	};
+
+	
 }

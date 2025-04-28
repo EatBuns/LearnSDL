@@ -3,7 +3,7 @@
 
 xplayer* playerState::m_player = nullptr;
 
-xplayer::xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch, float vx, PlayerStatus& s):Charactor("xplayer",anch,vx,s.status),m_playerStatus(s)
+xplayer::xplayer(SDL_Renderer* renderer, Animation::AnimationAnchor anch, float vx, NodeStatus& s):Charactor("xplayer",anch,vx,s)
 {
 	auto idleAnima = std::make_shared<AnimationState>("Role_Idle", renderer);
 	idleAnima->setAnchor(anch);
@@ -59,7 +59,7 @@ void xplayer::on_update(float delat)
 {
 	Charactor::on_update(delat);
 	int Axis = (int)(ic.isRight() - ic.isLeft());
-	v_vx = Axis * vx * (delat / 1000);
+	v_vx = Axis * up_vx * (delat / 1000);
 	if (Axis == 1) isfaceright = true;
 	else if (Axis == -1) isfaceright = false;
 
@@ -77,13 +77,9 @@ void xplayer::on_update(float delat)
 void xplayer::on_render()
 {
 	Charactor::on_render();
-	if (isInvincible && isNeedRender)
-		return;
-
-	m_machine.on_render();
 }
 
-void xplayer::on_CollisionCb(int layer,int collisionSide, SDL_FRect rect)
+void xplayer::on_CollisionCb(int layer,int collisionSide, SDL_FRect rect, std::string& name)
 {
 	/*COLLIDE_LEFT,     ===> 1
     COLLIDE_RIGHT,		===> 2
@@ -116,27 +112,53 @@ void xplayer::on_CollisionCb(int layer,int collisionSide, SDL_FRect rect)
 		}
 		break;
 	case 2:
-		SDL_Log("slime\n");
+		SDL_Log("%s\n",name.data());
 		{
- 			int monster_atk = DataManager::GetInstance().findMonster("slime").phy_atk;
-			int self_def = m_playerStatus.status.phy_def;
-			if (monster_atk - self_def <= 0)	m_playerStatus.status.hp--;
-			else
-			{
-				m_playerStatus.status.hp -= (monster_atk - self_def);
-				m_status.hp -= (monster_atk - self_def);
-			}
-
+ 			int monster_atk = DataManager::GetInstance().findMonster(name).phy_atk;
+			int self_def = m_status.phy_def;
+			if (monster_atk - self_def <= 0)	m_status.hp--;
+			else m_status.hp -= (monster_atk - self_def);
 			setInvincible();
 		}
 		break;
 	case 3:
 		SDL_Log("speed add\n");
-		startBuff(0, 3000, 1.0f, vx, 0);
+		startBuff(0, 3000, 1.0f, base_vx, 0);
 		break;
 	default:
 		break;
 	}
+}
+
+void xplayer::setSuit(Head* h, Body* b, Legs* l)
+{
+	m_body = b;
+	m_head = h;
+	m_legs = l;
+
+	m_body->onEnable();
+	m_head->onEnable();
+	m_legs->onEnable();
+
+	if (m_body->getItemID() < 4 && m_head->getItemID() < 4 && m_head->getItemID() < 4)
+		WANGBA_SPECIAL();
+}
+
+void xplayer::setInvincible()
+{
+	if(!isInvincible)
+	{
+		m_box->setDstLayer(CollisionBox::CollissionLayer::layer2, false);
+		isInvincible = true;
+		INvinTimer.reset();
+		INvinTimer.start();
+	}
+}
+
+void xplayer::onInvincibleTimeOut(int ununsed)
+{
+	isInvincible = false;
+	m_box->setDstLayer(CollisionBox::CollissionLayer::layer2, true);
 }
 
 void JumpState::on_update(float delat)
@@ -221,6 +243,8 @@ void AttackState::on_enter()
 	m_AnimationState->reset();
 
 	m_ftr = m_player->is_face_to_right();
+	p_vx = m_player->getBaseVx();
+	m_player->setVx(0);
 	m_box->setEnable(true);
 	if (m_ftr)
 	{	
@@ -237,6 +261,9 @@ void AttackState::on_exit()
 	playerState::on_exit();
 	SDL_Log("player attack exit");
 	m_box->setEnable(false);
+	m_player->setVx(p_vx);
+
+	
 }
 
 void playerState::on_update(float delat)
@@ -315,3 +342,5 @@ void RunState::on_exit()
 //技能系统(树)
 //战士、坦克、法师分支
 //加攻击
+
+

@@ -1,11 +1,10 @@
 #pragma once
 
 #include <unordered_map>
-#include <SDL.h>
 #include <SDL_image.h>
 #include <memory>
 #include "util.h"
-
+#include "xCamera.h"
 using namespace GameEngine2D;
 
 
@@ -36,6 +35,7 @@ public:
 	void loadDatafile(const std::string& path, std::unordered_map<std::string, NodeStatus>& node, PlayerStatus& playerStatus)override;
 };
 
+static xCamera m_camera;
 class DataManager
 {
 public:
