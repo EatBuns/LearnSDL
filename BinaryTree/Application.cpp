@@ -98,7 +98,7 @@ void Application::on_input(SDL_Event& e)
 Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 {
 	setXName("App");
-	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO | SDL_INIT_TIMER);
 	m_window = SDL_CreateWindow("BinaryTree", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_W, WINDOW_H, SDL_WINDOW_OPENGL);
 	if (m_window == NULL)
 	{
@@ -403,7 +403,7 @@ void engineBorad::on_render()
 {
 	// Create a window called "My First Tool", with a menu bar.
 	SDL_SetRenderTarget(renderer, targetTexture);
-	SDL_SetRenderDrawColor(renderer, 65, 65, 65, 255);
+	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 1);
 	SDL_RenderClear(renderer);
 
 	int w, h;
@@ -412,8 +412,45 @@ void engineBorad::on_render()
 
 	SDL_Rect src{ 0,0,w,h };
 	SDL_Rect dst{ 20,20,w,h };
+	/*typedef enum
+{
+    SDL_BLENDMODE_NONE = 0x00000000,     /**< no blending
+                                              dstRGBA = srcRGBA 
+	SDL_BLENDMODE_BLEND = 0x00000001,    /**< alpha blending
+											  dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA))
+											  dstA = srcA + (dstA * (1-srcA)) 
+		SDL_BLENDMODE_ADD = 0x00000002,      /**< additive blending
+												  dstRGB = (srcRGB * srcA) + dstRGB
+												  dstA = dstA 
+		SDL_BLENDMODE_MOD = 0x00000004,      /**< color modulate
+												  dstRGB = srcRGB * dstRGB
+												  dstA = dstA 
+		SDL_BLENDMODE_MUL = 0x00000008,      /**< color multiply
+												  dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA))
+												  dstA = dstA 
+		SDL_BLENDMODE_INVALID = 0x7FFFFFFF
+
+		/* Additional custom blend modes can be returned by SDL_ComposeCustomBlendMode() 
+
+} SDL_BlendMode; */
 	SDL_SetTextureBlendMode(iconTexture, SDL_BLENDMODE_BLEND);
-	SDL_SetTextureColorMod(iconTexture, r, g, b);
+	SDL_SetTextureAlphaMod(iconTexture, 255);
+	SDL_RenderCopy(renderer, iconTexture, &src, &dst);
+
+	int ssize = 50;
+	dst.x += ssize;
+	SDL_SetTextureBlendMode(iconTexture, SDL_BLENDMODE_ADD);
+	SDL_SetTextureAlphaMod(iconTexture, 1);
+	SDL_RenderCopy(renderer, iconTexture, &src, &dst);
+
+	dst.x += ssize;
+	SDL_SetTextureBlendMode(iconTexture, SDL_BLENDMODE_MOD);
+	SDL_SetTextureAlphaMod(iconTexture, 255);
+	SDL_RenderCopy(renderer, iconTexture, &src, &dst);
+
+	dst.x += ssize;
+	SDL_SetTextureBlendMode(iconTexture, SDL_BLENDMODE_MUL);
+	SDL_SetTextureAlphaMod(iconTexture, 255);
 	SDL_RenderCopy(renderer, iconTexture, &src, &dst);
 
 

@@ -160,6 +160,11 @@ void Font::setFontSize(const std::string& name, uint16_t ptSize)
 
 void Font::drawText(const char* str, int x, int y, int r, int g, int b, int a, const std::string& name)
 {
+	if (!current_renderer)
+	{
+		SDL_Log("Font Can't Find Renderer!\n");
+		return;
+	}
 	//绘制到目标坐标
 	SDL_Rect dest;
 	//字符集下标
@@ -178,10 +183,7 @@ void Font::drawText(const char* str, int x, int y, int r, int g, int b, int a, c
 		dest.w = glyphs[index][c].w;
 		dest.h = glyphs[index][c].h;
 
-		if(current_renderer)
-			SDL_RenderCopy(current_renderer, fontTextures[index], &glyphs[index][c], &dest);
-		else
-			SDL_Log("Font Can't Find Renderer!\n");
+		SDL_RenderCopy(current_renderer, fontTextures[index], &glyphs[index][c], &dest);
 
 		x += glyphs[index][*p].w;
 		c = str[i++];

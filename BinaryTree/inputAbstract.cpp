@@ -54,6 +54,11 @@ bool inputControl::isAttack()
     return inputs[(int)idx]->isAttack();
 }
 
+bool inputControl::is_Skill_1()
+{
+    return inputs[(int)idx]->isSkill_1();;
+}
+
 void inputControl::changeInputMode(InputMode i)
 {
 	idx = i;
@@ -61,6 +66,10 @@ void inputControl::changeInputMode(InputMode i)
 
 void keyBoradBridge::inputEvent(SDL_Event& e)  
 {  
+    /*if ((keysym.mod & KMOD_CTRL) && (keysym.sym == SDLK_c)) {
+        printf("Ctrl + C 组合键被按下，模拟复制操作...\n");
+    }*/
+
     if (e.type == SDL_KEYDOWN)  
     {  
         if (e.key.keysym.sym == key_map["UP"])  
@@ -93,9 +102,15 @@ void keyBoradBridge::inputEvent(SDL_Event& e)
             printf("ATTACK\n");
             is_attack = true;
         }
+        else if (e.key.keysym.sym == key_map["SKILL_1"] && !e.key.repeat)
+        {
+            printf("SKILL_1,e.key.repeat:%d\n", e.key.repeat);
+            is_skill_1 = true;
+        }
     }  
     else if (e.type == SDL_KEYUP)  
     {  
+        e.key.repeat;
         if (e.key.keysym.sym == key_map["UP"])  
         {  
             printf("NO UP\n");  
@@ -126,6 +141,11 @@ void keyBoradBridge::inputEvent(SDL_Event& e)
             printf("NO ATTACK\n");
             is_attack = false;
         }
+        else if (e.key.keysym.sym == key_map["SKILL_1"])
+        {
+            printf("NO SKILL_1\n");
+            is_skill_1 = false;
+        }
     }  
 }
 			
@@ -138,6 +158,7 @@ keyBoradBridge::keyBoradBridge()
 	key_map["RIGHT"] = SDL_KeyCode::SDLK_RIGHT;
 	key_map["SPACE"] = SDL_KeyCode::SDLK_SPACE;
     key_map["ATTACK"] = SDL_KeyCode::SDLK_j;
+	key_map["SKILL_1"] = SDL_KeyCode::SDLK_1;
 
 	is_right = false;
 	is_left = false;
@@ -175,4 +196,9 @@ bool keyBoradBridge::isSpace()
 bool keyBoradBridge::isAttack()
 {
     return is_attack;
+}
+
+bool keyBoradBridge::isSkill_1()
+{
+    return is_skill_1;
 }

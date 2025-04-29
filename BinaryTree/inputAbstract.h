@@ -15,6 +15,7 @@ public:
 	virtual bool isDown() = 0;
 	virtual bool isSpace() = 0;
 	virtual bool isAttack() = 0;
+	virtual bool isSkill_1() = 0;
 	virtual void changeKeyMap(const std::string& name, Sint32 key) = 0;
 
 	void on_update(float delta) final {};
@@ -44,9 +45,10 @@ public:
 	bool isDown() override;
 	bool isSpace() override;
 	bool isAttack() override;
+	bool isSkill_1() override;
 
 private:
-	bool is_right, is_left, is_up, is_down, is_space,is_attack;
+	bool is_right, is_left, is_up, is_down, is_space,is_attack, is_skill_1;
 };
 
 
@@ -97,6 +99,7 @@ public:
     bool isDown() override { return is_down; }
     bool isSpace() override { return is_space; }
 	bool isAttack() override { return false; } // Game controller doesn't have attack button in this example
+	bool isSkill_1() override { return false; } // Game controller doesn't have skill button in this example
 
 private:
     bool is_right, is_left, is_up, is_down, is_space;
@@ -120,6 +123,7 @@ public:
 	bool isDown();
 	bool isSpace();
 	bool isAttack();
+	bool is_Skill_1();
 	void changeInputMode(InputMode i);
 	void changeKeyMap(const std::string& name, Sint32 key){inputs[(int)idx]->changeKeyMap(name, key);}
 
