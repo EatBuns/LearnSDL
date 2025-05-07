@@ -18,6 +18,8 @@ namespace fs = std::filesystem;
 
 using namespace std;
 using namespace std::chrono;
+xplayer* main_player;
+SDL_Texture* grayTexure;
 
 #define WINDOW_W 800
 #define WINDOW_H 600
@@ -50,6 +52,11 @@ void Application::Run()
 		{
 			ImGui_ImplSDL2_ProcessEvent(&e);
 			on_input(e);
+		}
+
+		if (main_player->getPosition().x - DataManager::GetInstance().m_camera.CameraRect.x > 250)
+		{
+			DataManager::GetInstance().m_camera.movePos(0.01f, 0);
 		}
 
 		auto frame_start = steady_clock::now();
@@ -146,6 +153,13 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	}
 
 #if 1
+	auto path = getAbsolutePath("resource\\testIcon.png");
+	SDL_Surface *sur = IMG_Load(path.data());
+	SDL_Surface* dst;
+	createGrayTexture(sur, &dst);
+	grayTexure = SDL_CreateTextureFromSurface(m_renderer, dst);
+
+
 	SDL_FPoint p;
 	p.x = 100.0f;
 	p.y = 100.0f;
@@ -153,6 +167,7 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	player->setPosition(p);
 	player->setActualH(60);
 	player->setActualW(50);
+	main_player = player.get();
 
 	Body* b = new WANGBA_Body("wangba_body", m_renderer, ItemID::BODY_WANGBA);
 	Head* h = new WANGBA_Head("wangba_head", m_renderer, ItemID::HEAD_WANGBA);
@@ -192,7 +207,7 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	platform->setcolor(10, 10, 200, 200);
 	platform->setSrcLayer(CollisionBox::CollissionLayer::layer1);
 	platform->setPosition(-50, 550);
-	platform->setSize(900, 50);
+	platform->setSize(2900, 50);
 
 	platform = CollisionManager::instance().createBox();
 	platform->setcolor(200, 200, 200, 200);
@@ -224,8 +239,6 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 
 	borad = std::make_shared< engineBorad>(m_renderer);
 	borad->setApp_Node(this);
-	fs::path path;
-	fs::directory_entry entry;
 }
 
 void Application::on_update(float delat)
@@ -403,7 +416,7 @@ void engineBorad::on_render()
 {
 	// Create a window called "My First Tool", with a menu bar.
 	SDL_SetRenderTarget(renderer, targetTexture);
-	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 1);
+	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
 	SDL_RenderClear(renderer);
 
 	int w, h;
@@ -434,24 +447,32 @@ void engineBorad::on_render()
 
 } SDL_BlendMode; */
 	SDL_SetTextureBlendMode(iconTexture, SDL_BLENDMODE_BLEND);
-	SDL_SetTextureAlphaMod(iconTexture, 255);
+	SDL_SetTextureAlphaMod(iconTexture, 200);
+	SDL_SetTextureColorMod(iconTexture, 128, 128, 128);
+	//sdl_settextu
 	SDL_RenderCopy(renderer, iconTexture, &src, &dst);
 
 	int ssize = 50;
 	dst.x += ssize;
-	SDL_SetTextureBlendMode(iconTexture, SDL_BLENDMODE_ADD);
-	SDL_SetTextureAlphaMod(iconTexture, 1);
+	SDL_SetTextureBlendMode(iconTexture, SDL_BLENDMODE_BLEND);
+	SDL_SetTextureAlphaMod(iconTexture, 255);
+	SDL_SetTextureColorMod(iconTexture, 0, 255, 0);
 	SDL_RenderCopy(renderer, iconTexture, &src, &dst);
 
 	dst.x += ssize;
-	SDL_SetTextureBlendMode(iconTexture, SDL_BLENDMODE_MOD);
+	SDL_SetTextureBlendMode(iconTexture, SDL_BLENDMODE_BLEND);
 	SDL_SetTextureAlphaMod(iconTexture, 255);
+	SDL_SetTextureColorMod(iconTexture, 0, 0, 255);
 	SDL_RenderCopy(renderer, iconTexture, &src, &dst);
 
 	dst.x += ssize;
 	SDL_SetTextureBlendMode(iconTexture, SDL_BLENDMODE_MUL);
 	SDL_SetTextureAlphaMod(iconTexture, 255);
 	SDL_RenderCopy(renderer, iconTexture, &src, &dst);
+
+	dst.x += ssize;
+	SDL_SetTextureBlendMode(grayTexure, SDL_BLENDMODE_BLEND);
+	SDL_RenderCopy(renderer, grayTexure, &src, &dst);
 
 
 	CollisionManager::instance().on_render(renderer);

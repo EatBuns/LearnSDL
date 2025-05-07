@@ -49,6 +49,7 @@ private:
 
 	float m_delta;
 	std::shared_ptr<engineBorad> borad = nullptr;
+	//std::shared_ptr<xplayer> main_player = nullptr;
 };
 
 

@@ -57,6 +57,8 @@ public:
 	NodeStatus& findMonster(const std::string& name) { return gMonsters[name]; }
 	PlayerStatus& getPlayerState() { return gPlayerStatus; }
 	std::string getFontPath(const std::string& name);
+
+	xCamera m_camera;
 	
 private:
 	DataManager() = default;

@@ -57,6 +57,7 @@
     <ClCompile Include="inputAbstract.cpp" />
     <ClCompile Include="mtimer.cpp" />
     <ClCompile Include="TalkDialog.cpp" />
+    <ClCompile Include="util.cpp" />
     <ClCompile Include="xCamera.cpp" />
     <ClCompile Include="xItem.cpp" />
     <ClCompile Include="XNode.cpp" />

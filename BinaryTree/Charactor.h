@@ -303,6 +303,10 @@ public:
 	float getActH() { return Actual_h; }
 	float getActW() { return Actual_w; }
 
+	/*friend void testFunc(Charactor* c) {
+		SDL_Log("testFunc\n");
+	}*/
+
 protected:
 	SDL_FPoint Position;						//角色位置
 	float base_vx, up_vx;						//横向速度

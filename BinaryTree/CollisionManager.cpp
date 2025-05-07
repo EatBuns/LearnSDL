@@ -1,4 +1,5 @@
 #include "CollisionManager.h"
+#include "DataManager.h"
 
 typedef enum {
     COLLIDE_NONE,
@@ -102,6 +103,7 @@ void CollisionManager::on_update(float delta)
 	for (auto& var : m_boxs)
 	{
 		var->on_update(delta);
+        var->setPosition(var->getPos_x() - DataManager::GetInstance().m_camera.CameraRect.x, var->getPos_y() - DataManager::GetInstance().m_camera.CameraRect.y);
 	}
 }
 

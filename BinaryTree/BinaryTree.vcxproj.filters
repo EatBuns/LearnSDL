@@ -27,9 +27,6 @@
     <ClInclude Include="Application.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="util.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="XNode.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -70,6 +67,9 @@
       <Filter>util</Filter>
     </ClInclude>
     <ClInclude Include="xCamera.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
       <Filter>util</Filter>
     </ClInclude>
   </ItemGroup>
@@ -144,6 +144,9 @@
       <Filter>util</Filter>
     </ClCompile>
     <ClCompile Include="xCamera.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util.cpp">
       <Filter>util</Filter>
     </ClCompile>
   </ItemGroup>

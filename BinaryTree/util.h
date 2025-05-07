@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-
+#include <SDL.h>
 namespace GameEngine2D
 {
 #define WORKER
@@ -134,5 +134,7 @@ namespace GameEngine2D
 		NodeStatus status;
 	};
 
-	
+	void createGrayTexture(const SDL_Surface* source_surface, SDL_Surface** dst_surface);
+	///œﬂ–‘≤Â÷µ
+	float linear_interpolate_float(float start, float end, float t);
 }

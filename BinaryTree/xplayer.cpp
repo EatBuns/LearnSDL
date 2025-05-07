@@ -270,7 +270,10 @@ void playerState::on_update(float delat)
 {
 	auto pp = m_player->getPosition();
 	m_AnimationState->setFilp(m_player->is_face_to_right() ? false : true);
-	m_AnimationState->setPos(pp);
+	SDL_FPoint temp;
+	temp.x = pp.x - DataManager::GetInstance().m_camera.CameraRect.x;
+	temp.y = pp.y;
+	m_AnimationState->setPos(temp);
 	m_AnimationState->on_update(delat);
 }
 
