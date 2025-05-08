@@ -15,8 +15,6 @@ void GameEngine2D::createGrayTexture(const SDL_Surface* source_surface, SDL_Surf
 		source_surface->format->format          // 像素格式
 	);
 
-	SDL_BlitSurface((SDL_Surface*)source_surface, NULL, (SDL_Surface*)(*dst_surface), NULL);
-
 	if (*dst_surface == NULL)
 	{
 		printf("创建surface失败: %s\n", SDL_GetError());

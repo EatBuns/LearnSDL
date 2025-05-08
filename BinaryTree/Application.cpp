@@ -54,11 +54,6 @@ void Application::Run()
 			on_input(e);
 		}
 
-		if (main_player->getPosition().x - DataManager::GetInstance().m_camera.CameraRect.x > 250)
-		{
-			DataManager::GetInstance().m_camera.movePos(0.01f, 0);
-		}
-
 		auto frame_start = steady_clock::now();
 		auto delta = frame_start - last_point;
 
@@ -71,6 +66,14 @@ void Application::Run()
 		CollisionManager::instance().checkCollision();
 		this->on_update(m_delta);
 		CollisionManager::instance().on_update(m_delta);
+
+		DataManager::GetInstance().m_camera.on_update(m_delta);
+		if (main_player->getPosition().x - DataManager::GetInstance().m_camera.CameraRect.x > 250 && main_player->getVvx() != 0)
+		{
+			float dis = main_player->getPosition().x - DataManager::GetInstance().m_camera.CameraRect.x - 250;
+			SDL_Log("dis:%.2f\n", dis);
+			DataManager::GetInstance().m_camera.movePos(dis, 0, 500);
+		}
 		
 		SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); // 设置绘制颜色为黑色
 		SDL_RenderClear(m_renderer);
@@ -374,7 +377,8 @@ void engineBorad::on_update(float delta)
 	ImGui::Text("delta:%.1f", cur_delta);
 
 	int playerHP = -1;
-	float speed = 0;
+	float speed = 0,px = 0;
+
 	for (auto& child : app_node->get_child_list())
 	{
 		xplayer* p = nullptr;
@@ -382,6 +386,7 @@ void engineBorad::on_update(float delta)
 		{
 			playerHP = p->getHP();
 			speed = p->getUpVx();
+			px = p->getPosition().x;
 			break;
 		}
 	}
@@ -407,6 +412,8 @@ void engineBorad::on_update(float delta)
 		ImGui::BeginChild("inspector", { inspector_width,ImGui::GetContentRegionAvail().y }, ImGuiChildFlags_Border);
 		ImGui::Text("player hp:%d\n",playerHP);
 		ImGui::Text("player speed:%.2f\n", speed);
+		ImGui::Text("player pos.x:%.2f\n", px);
+		ImGui::Text("camera pos.x:%.2f\n", DataManager::GetInstance().m_camera.CameraRect.x);
 		ImGui::EndChild();
 	}
 	ImGui::End();

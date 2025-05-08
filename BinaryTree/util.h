@@ -137,4 +137,9 @@ namespace GameEngine2D
 	void createGrayTexture(const SDL_Surface* source_surface, SDL_Surface** dst_surface);
 	///线性插值
 	float linear_interpolate_float(float start, float end, float t);
+	static bool isZero(float x) {
+		// 设定一个合理的阈值（例如 1e-6）
+		const float epsilon = 1e-6f;
+		return fabsf(x) < epsilon;
+	}
 }

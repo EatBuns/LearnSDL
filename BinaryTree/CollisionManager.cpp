@@ -103,7 +103,29 @@ void CollisionManager::on_update(float delta)
 	for (auto& var : m_boxs)
 	{
 		var->on_update(delta);
-        var->setPosition(var->getPos_x() - DataManager::GetInstance().m_camera.CameraRect.x, var->getPos_y() - DataManager::GetInstance().m_camera.CameraRect.y);
+
+		// 计算相对于摄像机的矩形位置
+#if 0
+        auto box_rect = var->getRect();
+
+        auto cam_rect =  DataManager::GetInstance().m_camera.CameraRect;
+        if (box_rect.x + box_rect.w < cam_rect.x ||
+            box_rect.x > cam_rect.x + cam_rect.w ||
+            box_rect.y + box_rect.h < cam_rect.y ||
+            box_rect.y > cam_rect.y + cam_rect.h)
+        {
+			// 矩形在摄像机视野外，禁用碰撞
+            SDL_Log("node:%s,collision disEnable",var->getNodeName().data());
+            var->setEnable(false);
+        }
+        else
+        {
+			// 矩形在摄像机视野内，启用碰撞
+			var->setEnable(true);
+        }
+#endif
+
+        var->setPosition(var->getPos_x() - DataManager::GetInstance().m_camera.diffx, var->getPos_y() - DataManager::GetInstance().m_camera.CameraRect.y);
 	}
 }
 

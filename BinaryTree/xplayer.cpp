@@ -262,8 +262,6 @@ void AttackState::on_exit()
 	SDL_Log("player attack exit");
 	m_box->setEnable(false);
 	m_player->setVx(p_vx);
-
-	
 }
 
 void playerState::on_update(float delat)
