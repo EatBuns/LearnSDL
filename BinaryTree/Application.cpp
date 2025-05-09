@@ -108,7 +108,7 @@ void Application::on_input(SDL_Event& e)
 Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 {
 	setXName("App");
-	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO | SDL_INIT_TIMER);
+	SDL_Init(SDL_INIT_EVERYTHING);
 	m_window = SDL_CreateWindow("BinaryTree", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_W, WINDOW_H, SDL_WINDOW_OPENGL);
 	if (m_window == NULL)
 	{
@@ -242,6 +242,11 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 
 	borad = std::make_shared< engineBorad>(m_renderer);
 	borad->setApp_Node(this);
+
+	SDL_RendererInfo info;
+	SDL_GetRendererInfo(m_renderer, &info);
+	//SDL_GetAudioDeviceName();
+	SDL_Log("numAudio:%d", SDL_GetNumAudioDrivers());
 }
 
 void Application::on_update(float delat)
@@ -479,8 +484,16 @@ void engineBorad::on_render()
 
 	dst.x += ssize;
 	SDL_SetTextureBlendMode(grayTexure, SDL_BLENDMODE_BLEND);
+
+
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_RenderDrawPoint(renderer, 150, 150);
+
+
 	SDL_RenderCopy(renderer, grayTexure, &src, &dst);
 
+	
 
 	CollisionManager::instance().on_render(renderer);
 	for (auto& child : app_node->get_child_list())

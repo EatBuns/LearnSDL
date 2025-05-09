@@ -7,8 +7,9 @@
 class XNode
 {
 public:
-	enum class NodeType
+	enum class RenderLayer
 	{
+		None = 0,
 
 	};
 
