@@ -24,6 +24,30 @@ SDL_Texture* grayTexure;
 #define WINDOW_W 800
 #define WINDOW_H 600
 
+void readfileonebyte(const std::string& path)
+{
+	FILE* fp = nullptr;
+	fopen_s(&fp , path.data(), "rb");
+	if (fp)
+	{
+		fseek(fp, 0, SEEK_END);
+		long len = ftell(fp);
+		fseek(fp, 0, SEEK_SET);
+
+		int curlen = 0;
+		char str[2];
+		while (curlen != len)
+		{
+			memset(str, 0, 2);
+			fread(str, 1, 1, fp);
+			printf("%c\n", str[0]);
+			curlen++;
+			fseek(fp, curlen, SEEK_SET);
+		}
+		fclose(fp);
+	}
+}
+
 Application::~Application()
 {
 	ImGui_ImplSDL2_Shutdown();
@@ -71,8 +95,8 @@ void Application::Run()
 		if (main_player->getPosition().x - DataManager::GetInstance().m_camera.CameraRect.x > 250 && main_player->getVvx() != 0)
 		{
 			float dis = main_player->getPosition().x - DataManager::GetInstance().m_camera.CameraRect.x - 250;
-			SDL_Log("dis:%.2f\n", dis);
-			DataManager::GetInstance().m_camera.movePos(dis, 0, 500);
+			SDL_Log("dis:%.2f\n", dis); 
+			DataManager::GetInstance().m_camera.movePos(dis, 0, 100);
 		}
 		
 		SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); // 设置绘制颜色为黑色
@@ -247,7 +271,9 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	SDL_GetRendererInfo(m_renderer, &info);
 	//SDL_GetAudioDeviceName();
 	SDL_Log("numAudio:%d", SDL_GetNumAudioDrivers());
+	
 }
+
 
 void Application::on_update(float delat)
 {

@@ -133,6 +133,7 @@ public:
 	void setSuit(Head* h, Body* b, Legs* l);
 	void setInvincible()override;
 	void onInvincibleTimeOut(int ununsed)override;
+	int  getAxis() { return m_axis; }
 
 private:
 	inputControl ic;
@@ -141,5 +142,6 @@ private:
 	Head* m_head = nullptr;
 	Body* m_body = nullptr;
 	Legs* m_legs = nullptr;
+	int   m_axis = 0;		//¿ØÖÆÖá
 };
 

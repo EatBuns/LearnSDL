@@ -124,8 +124,8 @@ void CollisionManager::on_update(float delta)
 			var->setEnable(true);
         }
 #endif
-
-        var->setPosition(var->getPos_x() - DataManager::GetInstance().m_camera.diffx, var->getPos_y() - DataManager::GetInstance().m_camera.CameraRect.y);
+        if(cm_axis != 0)
+            var->setPosition(var->getPos_x() - DataManager::GetInstance().m_camera.CameraRect.x, var->getPos_y() - DataManager::GetInstance().m_camera.CameraRect.y);
 	}
 }
 

@@ -58,10 +58,12 @@ void xplayer::on_input(SDL_Event& e)
 void xplayer::on_update(float delat)
 {
 	Charactor::on_update(delat);
-	int Axis = (int)(ic.isRight() - ic.isLeft());
-	v_vx = Axis * up_vx * (delat / 1000);
-	if (Axis == 1) isfaceright = true;
-	else if (Axis == -1) isfaceright = false;
+	m_axis = (int)(ic.isRight() - ic.isLeft());
+	v_vx = m_axis * up_vx * (delat / 1000);
+	if (m_axis == 1) isfaceright = true;
+	else if (m_axis == -1) isfaceright = false;
+
+	CollisionManager::instance().cm_axis = m_axis;
 
 	m_box->setVx(v_vx);
 	Position.x += v_vx;

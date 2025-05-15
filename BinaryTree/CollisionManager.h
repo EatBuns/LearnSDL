@@ -19,11 +19,14 @@ public:
 	}
 	~CollisionManager();
 
+	int cm_axis = 0;
+
 private:
 	CollisionManager() {};
 	CollisionManager(const CollisionManager&) = delete;
 	CollisionManager& operator=(const CollisionManager&) = delete;
 
 	std::vector<CollisionBox*> m_boxs;
+
 };
 
