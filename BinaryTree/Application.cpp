@@ -86,18 +86,19 @@ void Application::Run()
 		ImGui_ImplSDLRenderer_NewFrame();
 		ImGui_ImplSDL2_NewFrame();
 		ImGui::NewFrame();
-		
-		CollisionManager::instance().checkCollision();
-		this->on_update(m_delta);
-		CollisionManager::instance().on_update(m_delta);
 
+#if 0
 		DataManager::GetInstance().m_camera.on_update(m_delta);
-		if (main_player->getPosition().x - DataManager::GetInstance().m_camera.CameraRect.x > 250 && main_player->getVvx() != 0)
+		if (main_player->getPosition().x - DataManager::GetInstance().m_camera.CameraRect.x > 250)
 		{
 			float dis = main_player->getPosition().x - DataManager::GetInstance().m_camera.CameraRect.x - 250;
-			SDL_Log("dis:%.2f\n", dis); 
+			SDL_Log("dis:%.2f\n", dis);
 			DataManager::GetInstance().m_camera.movePos(dis, 0, 100);
 		}
+#endif
+		this->on_update(m_delta);
+		CollisionManager::instance().on_update(m_delta);
+		CollisionManager::instance().checkCollision();
 		
 		SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255); // 设置绘制颜色为黑色
 		SDL_RenderClear(m_renderer);
@@ -129,7 +130,7 @@ void Application::on_input(SDL_Event& e)
 	}
 }
 
-Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
+Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL), TreeHead(std::make_unique<SkillNodeTree>())
 {
 	setXName("App");
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -272,6 +273,7 @@ Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL)
 	//SDL_GetAudioDeviceName();
 	SDL_Log("numAudio:%d", SDL_GetNumAudioDrivers());
 	
+	//std::unique_ptr<SkillNodeTree> rett = make_unique< SkillNodeTree>();
 }
 
 
@@ -489,6 +491,8 @@ void engineBorad::on_render()
 	SDL_SetTextureColorMod(iconTexture, 128, 128, 128);
 	//sdl_settextu
 	SDL_RenderCopy(renderer, iconTexture, &src, &dst);
+	Font::instance().setRender(renderer);
+	Font::instance().drawText("Hello", dst.x, dst.y, 255, 255, 255, 255, "SarasaMonoSC");
 
 	int ssize = 50;
 	dst.x += ssize;

@@ -273,6 +273,7 @@ void playerState::on_update(float delat)
 	SDL_FPoint temp;
 	temp.x = pp.x - DataManager::GetInstance().m_camera.CameraRect.x;
 	temp.y = pp.y;
+	SDL_Log("player pos:%.2f, camera_pos.x:%.2f", pp.x, DataManager::GetInstance().m_camera.CameraRect.x);
 	m_AnimationState->setPos(temp);
 	m_AnimationState->on_update(delat);
 }
@@ -345,5 +346,3 @@ void RunState::on_exit()
 //技能系统(树)
 //战士、坦克、法师分支
 //加攻击
-
-

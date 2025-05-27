@@ -124,8 +124,14 @@ void CollisionManager::on_update(float delta)
 			var->setEnable(true);
         }
 #endif
-        if(cm_axis != 0)
-            var->setPosition(var->getPos_x() - DataManager::GetInstance().m_camera.CameraRect.x, var->getPos_y() - DataManager::GetInstance().m_camera.CameraRect.y);
+        if (cm_axis != 0 /*&& var->getNodeName() == "player"*/)
+        {
+            auto posx = var->getPos_x();
+            auto camx = DataManager::GetInstance().m_camera.CameraRect.x;
+            SDL_Log("box.x:%.2f, camra.x:%.2f,res:%.2f", posx, camx, posx - camx);
+            var->setPosition( posx - camx, var->getPos_y() - DataManager::GetInstance().m_camera.CameraRect.y);
+        }
+            
 	}
 }
 

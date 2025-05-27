@@ -88,11 +88,11 @@ namespace GameEngine2D
 
 	typedef struct NodeStatus
 	{
-		NodeStatus():hp(0),phy_atk(0), mag_atk(0), phy_def(0), mag_def(0), mana(0) {}
-		NodeStatus(int h, int pa, int ma, int pd, int md, int mn,int vx) :hp(h),phy_atk(pa), mag_atk(ma), 
-																   phy_def(pd), mag_def(md), mana(mn),vx_s(vx) {}
+		NodeStatus():hp(0),phy_atk(0), mag_atk(0), phy_def(0), mag_def(0), mana(0), base_phy_atk(0){}
+		NodeStatus(int h, int pa, int ma, int pd, int md, int mn,int vx, int bpa) :hp(h),phy_atk(pa), mag_atk(ma), 
+																   phy_def(pd), mag_def(md), mana(mn),vx_s(vx), base_phy_atk(bpa){}
 		NodeStatus(const NodeStatus& o):hp(o.hp),phy_atk(o.phy_atk),mag_atk(o.mag_atk),phy_def(o.phy_def),
-										mag_def(o.mag_def),mana(o.mana),vx_s(o.vx_s){}
+										mag_def(o.mag_def),mana(o.mana),vx_s(o.vx_s), base_phy_atk(o.base_phy_atk){}
 		NodeStatus& operator=(const NodeStatus&o) {
 			hp = o.hp;
 			phy_atk = o.phy_atk;
@@ -104,9 +104,10 @@ namespace GameEngine2D
 			return *this;
 		}
 		int hp = 0;
-		int phy_atk = 0;		//物理攻击
+		int base_phy_atk = 0;	//物理攻击
+		int phy_atk = 0;
 		int mag_atk = 0;		//魔法攻击
-		int phy_def = 0;		//物理防御
+		int phy_def = 0;		//物理防御	
 		int mag_def = 0;		//魔法防御
 		int mana = 0;
 
@@ -125,11 +126,12 @@ namespace GameEngine2D
 	{
 		PlayerStatus() = default;
 		PlayerStatus(const PlayerStatus& o) :exp(o.exp), need_exp(o.need_exp),
-			playerName(o.playerName), status(o.status) {
+			playerName(o.playerName), status(o.status), pht_atk_ratio(o.pht_atk_ratio){
 		}
 		int level = 0;
 		int exp = 0;
 		int need_exp = 0;
+		float pht_atk_ratio = 1.0f;
 		std::string playerName;
 		NodeStatus status;
 	};

@@ -33,5 +33,7 @@ void WANGBA_Legs::onEnable()
 
 void WANGBA_SPECIAL()
 {
-	DataManager::GetInstance().getPlayerState().status.phy_atk *= 1.33;
+	PlayerStatus& playerStatus = DataManager::GetInstance().getPlayerState();
+	playerStatus.pht_atk_ratio += 0.33;
+	playerStatus.status.phy_atk = playerStatus.status.base_phy_atk * playerStatus.pht_atk_ratio;
 }

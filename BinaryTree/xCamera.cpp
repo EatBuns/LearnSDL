@@ -3,6 +3,9 @@
 
 void xCamera::movePos(float x, float y, int ms)
 {
+	CameraRect.x += x;
+	return;
+
 	if (moveing || GameEngine2D::isZero(x)) return;
 
 	SDL_Log("camera moving");

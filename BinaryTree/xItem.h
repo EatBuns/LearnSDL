@@ -105,4 +105,41 @@ public:
 	~WANGBA_Legs() {};
 };
 
+class skillNode :public XNode
+{
+public:
+	skillNode(const std::string& name, SDL_Renderer* renderer) :XNode(name), m_renderer(renderer), m_Enable(false),skillname(name)
+	{
+		m_animation.setRenderer(renderer);
+	}
+	virtual ~skillNode() = default;
+	void on_update(float delat) override {}
+	void on_render()override {
+		m_animation.on_render();
+	}
+	void setPosition(SDL_FPoint& p) {
+		m_animation.setPos(p);
+	}
+	virtual void onEnable() {
+		m_Enable != m_Enable;
+	};
+protected:
+	Animation	m_animation;
+	SDL_Renderer* m_renderer;
+	std::function<void()> cb;
+	std::string skillname;
+	bool m_Enable;
+};
+
+class SkillNodeTree
+{
+public:
+	void addChild(std::unique_ptr<skillNode> node)
+	{
+		childs.push_back(std::move(node));
+	}
+private:
+	std::vector<std::unique_ptr<skillNode>> childs;
+};
+
 void WANGBA_SPECIAL();
