@@ -4,6 +4,7 @@
 #include <SDL_audio.h>
 #include <SDL_ttf.h>
 #include "XNode.h"
+#include "xItem.h"
 
 class engineBorad
 {
