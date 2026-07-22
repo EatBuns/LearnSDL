@@ -132,6 +132,8 @@ void Application::on_input(SDL_Event& e)
 
 Application::Application() :m_renderer(NULL), m_window(NULL),testTexture(NULL), TreeHead(std::make_unique<SkillNodeTree>())
 {
+	//这是测试的，后续会删除
+
 	setXName("App");
 	SDL_Init(SDL_INIT_EVERYTHING);
 	m_window = SDL_CreateWindow("BinaryTree", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_W, WINDOW_H, SDL_WINDOW_OPENGL);
